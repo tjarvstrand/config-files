@@ -121,11 +121,12 @@ export PATH="/opt/chef/bin:/opt/chef/embedded/bin:${PATH}"
 #Misc paths
 export PATH="${PATH}:~/bin:~/scripts:~/erlang/install/current/bin"
 
+export GIT_AUTHOR_EMAI="tjarvstrand@gmail.com"
 
 # Klarna --------------------------------------------------------------
 
-GIT_AUTHOR_EMAIL_ORIG=${GIT_AUTHOR_EMAIL}
 function cd {
+  GIT_AUTHOR_EMAIL_ORIG=${GIT_AUTHOR_EMAIL}
   if [[ "$(readlink -f $1)" == *"$HOME/klarna"* ]]; then
       GIT_AUTHOR_EMAIL_NEW="thomas.jarvstrand@klarna.com"
   else
