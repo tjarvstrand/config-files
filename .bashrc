@@ -62,7 +62,6 @@ function start_agent {
 
 if [ -f "${SSH_ENV}" ]; then
     . "${SSH_ENV}" > /dev/null
-    #ps ${SSH_AGENT_PID} doesn't work under cywgin
     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
         start_agent;
     }
@@ -113,41 +112,25 @@ fi
 
 export ERL_INETRC=${HOME}/.inetrc
 
-
- # Make sure to use kernel_poll
-export KRED_POLL=true
-export IGNORE_FORCE_BACKUP=true
-export KRED_SKIP_SUBMODULE_UPDATE=true
-
 export OTP_PATH="${HOME}/erlang/install/current"
 export PATH="${OTP_PATH}/bin:${ORIG_PATH}"
 export DIALYZER_PLT="${OTP_PATH}/dialyzer.plt"
 
-# Fred
-export SYSCONFIG_JSON_OVERRIDES="overrides.json"
-
 #Chef
 export PATH="/opt/chef/bin:/opt/chef/embedded/bin:${PATH}"
 #Misc paths
-export PATH="${PATH}:~/bin:~/erlang/install/current/bin"
-#Klarna paths
+export PATH="${PATH}:~/bin:~/scripts:~/erlang/install/current/bin"
+
+
+# Klarna --------------------------------------------------------------
+
+# Paths
 export PATH="${PATH}:~/klarna/fred/fred_platform/bin:~/klarna/fred/gitrdun/bin"
 export PATH="${PATH}:~/klarna/chef/berksenv"
 export PATH="${PATH}:~/klarna/cloudstack/orchid/bin"
-#Android PATHS
-export PATH="${PATH}:~/android-sdk-linux/tools:~/android-sdk-linux/platform-tools:~/android-studio/bin"
-# Ruby rbenv
-# export PATH="${HOME}/src/external/rbenv/bin:$PATH"
-# eval "$(rbenv init -)"
 
-export PYTHONPATH="/usr/local/lib/python2.7/dist-packages:/usr/lib/python2.7/dist-packages:/usr/share/pyshared:/usr/lib/python2.7/dist-packages/xattr"
-
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
-
-# Ansible
-pushd ~/src/external/ansible > /dev/null
-#source ./hacking/env-setup -q
-popd > /dev/null
+# Env
+# Make sure to use kernel_poll
+export KRED_POLL=true
+export IGNORE_FORCE_BACKUP=true
+export KRED_SKIP_SUBMODULE_UPDATE=true
