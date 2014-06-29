@@ -1,0 +1,67 @@
+[user]
+	name = Thomas Järvstrand
+	email = thomas.jarvstrand@klarna.com
+
+[color]
+  ui = auto
+  diff = auto
+  interactive = true
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[alias]
+   st    = status
+   br    = branch
+   co    = checkout
+   df    = diff --ignore-submodules
+   # all new commits after you fetched, with stats, but excluding merges
+   lc    = log ORIG_HEAD.. --stat --no-merges
+   in    = log HEAD..origin/master
+   out   = log origin/master..HEAD
+   # Recall that the commit which will be committed after we resolve this conflict
+   # will have two parents instead of the usual one: one parent will be HEAD, the 
+   # tip of the current branch; the other will be the tip of the other branch, 
+   # which is stored temporarily in MERGE_HEAD.
+   gitkconflict = !gitk --left-right HEAD...MERGE_HEAD
+   # "pull" or "merge" always leaves the original tip of the current branch in ORIG_HEAD.
+   # Hence, to see what a merge brought in, use the mdiff alias:
+   mdiff = !gitk --left-right HEAD...ORIG_HEAD
+   # Remove a file from the index: git unstage <file>
+   last = log -1 HEAD
+   whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+   who = "!git shortlog -s -- | sort -n -k1"
+   aliases = "!git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'"
+
+[merge]
+  tool = meld
+
+[mergetool]
+  prompt = false
+
+[mergetool.ediff]
+  cmd = emacs --eval \" \
+  (progn \
+   (setq ediff-quit-hook 'kill-emacs) \
+   (if (file-readable-p \\\"$BASE\\\") \
+     (ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \
+                                      \\\"$BASE\\\" nil \\\"$MERGED\\\") \
+     (ediff-merge-files \\\"$LOCAL\\\" \\\"$REMOTE\\\" nil \\\"$MERGED\\\")))\"
+
+[push]
+  # instead of pushing all branches with git push, you only push the current one.
+  default = current
+[core]
+  # global per user gitignore file
+  excludesfile = "~/.gitignore"
+[status]
+  [submodule]
+    summary = 0
+[branch]
+  autosetupmerge = true
+[dude]
+  interval = 30

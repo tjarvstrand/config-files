@@ -1,0 +1,43 @@
+[global_config]
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  focus = system
+  title_transmit_fg_color = "#000000"
+  title_hide_sizetext = True
+  tab_position = hidden
+  title_inactive_bg_color = "#3b3b3b"
+[keybindings]
+  switch_to_tab_6 = <Control>6
+  switch_to_tab_7 = <Control>7
+  switch_to_tab_4 = <Control>4
+  switch_to_tab_5 = <Control>5
+  switch_to_tab_2 = <Control>2
+  switch_to_tab_3 = <Control>3
+  switch_to_tab_1 = <Control>1
+  switch_to_tab_8 = <Control>8
+  switch_to_tab_9 = <Control>9
+[profiles]
+  [[default]]
+    palette = "#000000:#cc0000:#4e9a06:#c4a000:#3465a4:#75507b:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
+    audible_bell = True
+    cursor_color = "#43ac2e"
+    foreground_color = "#358e30"
+    use_custom_command = True
+    icon_bell = False
+    font = Inconsolata Bold 8
+    scrollback_lines = 10000
+  [[New Profile]]
+    use_system_font = False
+    font = Monospace 24
+    background_color = "#ffffff"
+    foreground_color = "#000000"
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+    [[[window0]]]
+      type = Window
+      parent = ""
+      profile = None
+[plugins]
