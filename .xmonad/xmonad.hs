@@ -31,7 +31,7 @@ myLayout = tiled ||| Mirror tiled ||| Full
 myManageHook :: [ManageHook]
 myManageHook =
   [ resource =? "Do" --> doIgnore
-  , isFullscreen --> (doF W.focusDown <+> doFullFloat)
+  , isFullscreen --> doFullFloat
   , className =? "Unity-2d-panel" --> doIgnore
   , className =? "Unity-2d-launcher" --> doFloat ]
 
@@ -45,7 +45,7 @@ main = xmonad $ gnomeConfig
   }
   `additionalKeysP`
     [ ("M1-<Tab>",  windows W.focusDown)
-    , ("M1-<Space>", spawn "kupfer")
+    , ("M1-<Space>", spawn "gnome-do")
     , ("M1-<Up>", raiseVolume 4 >> return ())
     , ("M1-<Down>", lowerVolume 4 >> return ())
     ]
