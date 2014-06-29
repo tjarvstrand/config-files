@@ -6,7 +6,7 @@
 
 ;; Set font
 (if (string= "brunsnultra" (system-name))
-   (set-frame-font "Ubuntu Mono-7.5" t)
+   (set-frame-font "Ubuntu Mono-10" t)
   (set-frame-font "Ubuntu Mono-9"))
 
 (global-font-lock-mode t)
