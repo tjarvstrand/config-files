@@ -1,5 +1,10 @@
 .emacs.desktop
 .emacs.desktop.lock
 .#*
+\#*
 .edts
 *~
+.xmonad/xmonad-*
+.xmonad/xmonad.errors
+.xmonad/xmonad.hi
+.xmonad/xmonad.o
