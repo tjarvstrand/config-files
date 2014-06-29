@@ -124,6 +124,20 @@ export PATH="${PATH}:~/bin:~/scripts:~/erlang/install/current/bin"
 
 # Klarna --------------------------------------------------------------
 
+GIT_AUTHOR_EMAIL_ORIG=${GIT_AUTHOR_EMAIL}
+function cd {
+  if [[ "$(readlink -f $1)" == *"$HOME/klarna"* ]]; then
+      GIT_AUTHOR_EMAIL_NEW="thomas.jarvstrand@klarna.com"
+  else
+      GIT_AUTHOR_EMAIL_NEW="tjarvstrand@gmail.com"
+  fi
+  if [[ "${GIT_AUTHOR_EMAIL_NEW}" != "${GIT_AUTHOR_EMAIL}" ]]; then
+      export GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL_NEW}
+      echo GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL_NEW}
+  fi
+  builtin cd "${@:1}"
+}
+
 # Paths
 export PATH="${PATH}:~/klarna/fred/fred_platform/bin:~/klarna/fred/gitrdun/bin"
 export PATH="${PATH}:~/klarna/chef/berksenv"
