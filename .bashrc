@@ -127,14 +127,16 @@ export GIT_AUTHOR_EMAI="tjarvstrand@gmail.com"
 
 function cd {
   GIT_AUTHOR_EMAIL_ORIG=${GIT_AUTHOR_EMAIL}
-  if [[ "$(readlink -f $1)" == *"$HOME/klarna"* ]]; then
-      GIT_AUTHOR_EMAIL_NEW="thomas.jarvstrand@klarna.com"
-  else
-      GIT_AUTHOR_EMAIL_NEW="tjarvstrand@gmail.com"
-  fi
-  if [[ "${GIT_AUTHOR_EMAIL_NEW}" != "${GIT_AUTHOR_EMAIL}" ]]; then
-      export GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL_NEW}
-      echo GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL_NEW}
+  if [[ -n "$1" ]]; then
+    if [[ "$(readlink -f $1)" == *"$HOME/klarna"* ]]; then
+        GIT_AUTHOR_EMAIL_NEW="thomas.jarvstrand@klarna.com"
+    else
+        GIT_AUTHOR_EMAIL_NEW="tjarvstrand@gmail.com"
+    fi
+    if [[ "${GIT_AUTHOR_EMAIL_NEW}" != "${GIT_AUTHOR_EMAIL}" ]]; then
+        export GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL_NEW}
+        echo GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL_NEW}
+    fi
   fi
   builtin cd "${@:1}"
 }
