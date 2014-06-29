@@ -1,10 +1,11 @@
-(add-to-list 'load-path "~/elisp")
-(add-to-list 'load-path "~/elisp/misc")
-(add-to-list 'load-path "~/elisp/ecukess")
-(add-to-list 'load-path "~/elisp/espuds")
-(add-to-list 'load-path "~/elisp/yaml-mode")
 
-(add-to-list 'load-path "~/elisp/ctrl-mode")
+(let ((lib-dir (concat user-emacs-directory "/lib")))
+  (add-to-list 'load-path lib-dir)
+  (dolist  (dir (directory-files lib-dir t "^[^.]"))
+    (when (file-directory-p dir)
+      (add-to-list 'load-path dir))))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ELPA
@@ -14,6 +15,8 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 (if (< emacs-major-version 24)
+  (unless (file-directory-p "~/.emacs.d/elpa")
+    (make-directory "~/.emacs.d/elpa"))
   (dolist (file (directory-files "~/.emacs.d/elpa" t "^[^.]"))
     (when (file-directory-p file)
       (add-to-list 'load-path file)))
@@ -56,18 +59,6 @@
 (setq-default indent-tabs-mode nil)
 
 (require 'smart-beginning-of-line)
-
-(autoload 'ack-and-a-half-same "ack-and-a-half" nil t)
-(autoload 'ack-and-a-half "ack-and-a-half" nil t)
-(autoload 'ack-and-a-half-find-file-samee "ack-and-a-half" nil t)
-(autoload 'ack-and-a-half-find-file "ack-and-a-half" nil t)
-;; Create shorter aliases
-(defalias 'ack 'ack-and-a-half)
-(defalias 'ack-same 'ack-and-a-half-same)
-(defalias 'ack-find-file 'ack-and-a-half-find-file)
-(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
-(setq ack-and-a-half-prompt-for-directory t)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Keybindings
 (load-library "my-keybindings")
