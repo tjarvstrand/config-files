@@ -13,10 +13,9 @@
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
-
-(if (< emacs-major-version 24)
-  (unless (file-directory-p "~/.emacs.d/elpa")
+(unless (file-directory-p "~/.emacs.d/elpa")
     (make-directory "~/.emacs.d/elpa"))
+(if (< emacs-major-version 24)
   (dolist (file (directory-files "~/.emacs.d/elpa" t "^[^.]"))
     (when (file-directory-p file)
       (add-to-list 'load-path file)))
