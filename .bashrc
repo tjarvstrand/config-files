@@ -121,14 +121,13 @@ export PATH="/opt/chef/bin:/opt/chef/embedded/bin:${PATH}"
 #Misc paths
 export PATH="${PATH}:~/bin:~/scripts:~/erlang/install/current/bin"
 
-export GIT_AUTHOR_EMAI="tjarvstrand@gmail.com"
-
 # Klarna --------------------------------------------------------------
 
 function cd {
+  builtin cd "${@:1}"
   GIT_AUTHOR_EMAIL_ORIG=${GIT_AUTHOR_EMAIL}
-  if [[ -n "$1" ]]; then
-    if [[ "$(readlink -f $1)" == *"$HOME/klarna"* ]]; then
+  if [[ -n "${PWD}" ]]; then
+    if [[ "$(readlink -f ${PWD})" == *"$HOME/klarna"* ]]; then
         GIT_AUTHOR_EMAIL_NEW="thomas.jarvstrand@klarna.com"
     else
         GIT_AUTHOR_EMAIL_NEW="tjarvstrand@gmail.com"
@@ -138,8 +137,8 @@ function cd {
         echo GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL_NEW}
     fi
   fi
-  builtin cd "${@:1}"
 }
+cd $PWD
 
 # Paths
 export PATH="${PATH}:~/klarna/fred/fred_platform/bin:~/klarna/fred/gitrdun/bin"
