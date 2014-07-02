@@ -1,12 +1,7 @@
-code:add_path("/home/thomas.jarvstrand/src/user_default").
-code:add_path("/home/thomas/src/user_default").
+Home = os:getenv("HOME").
+code:add_path(Home ++ "/src/user_default").
 case code:where_is_file("redbug.beam") of
-     non_existing ->
-       code:add_path("/home/thomas.jarvstrand/src/external/eper/ebin"),
-       code:add_path("/home/thomas/src/external/eper/ebin");
+     non_existing -> code:add_path(Home ++ "/src/eper/ebin");
      _            -> ok
 end.
 code:load_file(user_default).
-code:add_path("test/shared/ebin").
-%% error_logger:delete_report_handler(sasl_report tty_h).
-%% error_logger:delete_report_handler(error_logger_tty_h).
