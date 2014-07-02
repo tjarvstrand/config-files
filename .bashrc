@@ -6,9 +6,6 @@ export LC_TYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 export EDITOR="emacs -Q -nw"
-if [[ -z $ORIG_PATH ]]; then
-   export ORIG_PATH="${PATH}"
-fi
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -112,6 +109,13 @@ fi
 
 export ERL_INETRC=${HOME}/.inetrc
 
+# Paths --------------------------------------------------------------
+
+if [[ -z $ORIG_PATH ]]; then
+   export ORIG_PATH="${PATH}"
+fi
+echo $ORIG_PATH
+
 export OTP_PATH="${HOME}/erlang/install/current"
 export PATH="${OTP_PATH}/bin:${ORIG_PATH}"
 export DIALYZER_PLT="${OTP_PATH}/dialyzer.plt"
@@ -119,7 +123,7 @@ export DIALYZER_PLT="${OTP_PATH}/dialyzer.plt"
 #Chef
 export PATH="/opt/chef/bin:/opt/chef/embedded/bin:${PATH}"
 #Misc paths
-export PATH="${PATH}:~/bin:~/scripts:~/erlang/install/current/bin"
+export PATH="${PATH}:~/bin:~/scripts:${HOME}/.erlang.d/current/bin:${HOME}/src/rebar"
 
 # Klarna --------------------------------------------------------------
 
