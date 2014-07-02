@@ -3,9 +3,9 @@
 ;; Erlang specific functions and configurations
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path "~/elisp/erl-parse")
-(require 'erl)
-(add-to-list 'exec-path "~/erlang/install/current/bin")
+;; (add-to-list 'load-path "~/elisp/erl-parse")
+;; (require 'erl)
+(add-to-list 'exec-path "~/.erlang.d/current/bin")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -27,7 +27,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; EDTS
-(add-to-list 'load-path "~/elisp/edts")
+(add-to-list 'load-path "~/src/edts")
 (require 'edts-start)
 
 
