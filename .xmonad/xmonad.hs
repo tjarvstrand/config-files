@@ -14,7 +14,7 @@ import XMonad.Layout.NoBorders
 
 import XMonad.Actions.CycleWindows
 
-myLayout = tiled ||| Mirror tiled ||| Full
+myLayout = smartBorders $ tiled ||| Mirror tiled ||| Full
   where
     -- default tiling algorithm partitions the screen into two panes
       tiled   = Tall nmaster delta ratio
