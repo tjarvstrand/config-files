@@ -50,10 +50,9 @@
  '(inhibit-startup-screen t)
  '(js-indent-level 2)
  '(message-log-max 10000)
- '(safe-local-variable-values (quote ((allout-layout . t))))
- '(user-mail-address "tjarvstrand@gmail.com"))
-(setenv "EMAIL" "tjarvstrand@gmail.com")
+ '(safe-local-variable-values (quote ((allout-layout . t)))))
 
+(getenv "EMAIL")
 (setq x-select-enable-clipboard 1)
 (setq-default indent-tabs-mode nil)
 
