@@ -43,7 +43,7 @@
 (global-set-key (kbd "s-p") 'windmove-up)
 (global-set-key (kbd "s-n") 'windmove-down)
 
-(global-set-key [C-tab] 'other-window)
+;; (global-set-key [C-tab] 'other-window)
 ;; (global-set-key [C-S-iso-lefttab] #'(lambda () (interactive) (other-window -1)))
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
 

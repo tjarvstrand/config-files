@@ -45,7 +45,7 @@ main = xmonad $ gnomeConfig
   }
   `additionalKeysP`
     [ ("M1-<Tab>",  windows W.focusDown)
-    , ("M1-<Space>", spawn "gnome-do")
+    , ("C-<Return>", spawn "gnome-do")
     , ("M1-<Up>", raiseVolume 4 >> return ())
     , ("M1-<Down>", lowerVolume 4 >> return ())
     ]
