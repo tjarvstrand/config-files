@@ -20,8 +20,10 @@
 (defun sudo-edit-current-file ()
   "Edit the current file as root"
   (interactive)
-  (find-alternate-file
-   (concat "/sudo:root@localhost:" (buffer-file-name (current-buffer)))))
+  (let ((point (point)))
+    (find-alternate-file
+     (concat "/sudo:root@localhost:" (buffer-file-name (current-buffer))))
+    (goto-char point)))
 
 (defun symbol-next ()
   "Moves point to next occurrence, if any, of the symbol-at-point, if any"
