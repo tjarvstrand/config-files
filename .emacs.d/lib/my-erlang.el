@@ -5,21 +5,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (add-to-list 'load-path "~/elisp/erl-parse")
 ;; (require 'erl)
-(add-to-list 'exec-path "~/.erlang.d/current/bin")
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Erlang-mode
-;; (setq erlang-root-dir "~/klarna/erlang/install/r14b03")
-;; (add-to-list 'load-path
-;;              (concat
-;;               (car (directory-files
-;;                     (concat erlang-root-dir "/lib/erlang/lib") t "^tools-"))
-;;              "/emacs"))
-(add-to-list 'load-path "~/elisp/erlang-mode")
-(require 'erlang-start)
-
-
+(add-to-list 'exec-path "/home/tjarvstrand/.erlang.d/current/bin")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Indentation
