@@ -108,15 +108,21 @@ fi
 
 export ERL_INETRC=${HOME}/.inetrc
 
-# Paths --------------------------------------------------------------
+# Paths ------------------------------------------------------------------------
+
+if [[ -z $ORIG_PYTHONPATH ]]; then
+   export ORIG_PYTHONPATH="${PYTHONPATH}"
+fi
+export PYTHONPATH=${ORIG_PYTHONPATH}
+
 
 if [[ -z $ORIG_PATH ]]; then
    export ORIG_PATH="${PATH}"
 fi
-echo $ORIG_PATH
+export PATH=${ORIG_PATH}
 
 export OTP_PATH="${HOME}/erlang/install/current"
-export PATH="${OTP_PATH}/bin:${ORIG_PATH}"
+export PATH="${OTP_PATH}/bin:${PATH}"
 export DIALYZER_PLT="${OTP_PATH}/dialyzer.plt"
 
 #Chef
@@ -124,7 +130,18 @@ export PATH="/opt/chef/bin:/opt/chef/embedded/bin:${PATH}"
 #Misc paths
 export PATH="${PATH}:~/bin:~/scripts:${HOME}/.erlang.d/current/bin:${HOME}/src/rebar"
 
-# Klarna --------------------------------------------------------------
+# Go
+export PATH="${HOME}/src/golang/go/bin:${PATH}"
+export GOPATH=~/src/golang/packages
+
+# Ansible ----------------------------------------------------------------------
+export ANSIBLE_HOME=${HOME}/src/ansible
+export PATH=${ANSIBLE_HOME}/bin:${PATH}
+export ANSIBLE_LIBRARY=${ANSIBLE_HOME}/library
+export MANPATH=${ANSIBLE_HOME}/docs/man
+export PYTHONPATH=${ANSIBLE_HOME}/lib:${PYTHONPATH}
+
+# Klarna -----------------------------------------------------------------------
 
 function cd {
   builtin cd "${@:1}"
