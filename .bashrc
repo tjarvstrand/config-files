@@ -52,7 +52,6 @@ function start_agent {
     echo succeeded
     chmod 600 "${SSH_ENV}"
     . "${SSH_ENV}" > /dev/null
-    /usr/bin/ssh-add;
 }
 
 # Source SSH settings, if applicable
@@ -65,7 +64,7 @@ if [ -f "${SSH_ENV}" ]; then
 else
     start_agent;
 fi
-
+/usr/bin/ssh-add;
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
