@@ -1,7 +1,6 @@
 [user]
 	name = Thomas Järvstrand
-	email = thomas.jarvstrand@klarna.com
-
+	email = tjarvstrand@gmail.com
 [color]
   ui = auto
   diff = auto
@@ -25,3 +24,5 @@
     summary = 0
 [branch]
   autosetupmerge = true
+[gitreview]
+	username = tjarvstrand
