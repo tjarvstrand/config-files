@@ -9,12 +9,15 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.Volume
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.NoBorders
 
 import XMonad.Actions.CycleWindows
 
-myLayout = smartBorders $ tiled ||| Mirror tiled ||| Full
+myLayout = smartBorders tiled |||
+           -- Mirror tiled |||
+           noBorders Full
   where
     -- default tiling algorithm partitions the screen into two panes
       tiled   = Tall nmaster delta ratio
@@ -41,7 +44,8 @@ main = xmonad $ gnomeConfig
   , borderWidth = 2
   , manageHook = manageHook gnomeConfig <+> composeAll myManageHook
   , logHook = ewmhDesktopsLogHook >> setWMName "LG3D" -- java workaround
-  , layoutHook = gaps [(U, 24)] myLayout
+  , layoutHook = lessBorders OnlyFloat $ avoidStruts $ myLayout
+  --, startupHook = do spawn "/bin/bash ~/.xmonadrc"
   }
   `additionalKeysP`
     [ ("M1-<Tab>",  windows W.focusDown)
