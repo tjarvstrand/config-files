@@ -64,7 +64,11 @@ if [ -f "${SSH_ENV}" ]; then
 else
     start_agent;
 fi
-/usr/bin/ssh-add;
+if ssh-add -l | cut -d ' ' -f 3 | grep ${HOME}/.ssh/id_rsa > /dev/null; then
+    echo id_rsa already added to agent
+else
+    /usr/bin/ssh-add
+fi
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
