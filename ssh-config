@@ -2,3 +2,7 @@ KeepAlive yes
 ServerAliveInterval 60
 ForwardAgent yes
 User thomas.jarvstrand
+
+Host 10.235.8.*
+     StrictHostKeyChecking=no
+     UserKnownHostsFile=/dev/null
