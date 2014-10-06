@@ -50,7 +50,8 @@
  '(inhibit-startup-screen t)
  '(js-indent-level 2)
  '(message-log-max 10000)
- '(safe-local-variable-values (quote ((allout-layout . t)))))
+ '(safe-local-variable-values (quote ((allout-layout . t))))
+ '(vc-follow-symlinks t))
 
 (getenv "EMAIL")
 (setq x-select-enable-clipboard 1)
