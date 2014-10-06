@@ -138,11 +138,14 @@ export PATH="${PATH}:~/bin:~/scripts:${HOME}/.erlang.d/current/bin:${HOME}/src/r
 export PATH="${HOME}/src/golang/go/bin:${PATH}"
 export GOPATH=~/src/golang/packages
 
+# Conjur -----------------------------------------------------------------------
+export PATH="${PATH}:/opt/conjur/bin"
+
 # Ansible ----------------------------------------------------------------------
 export ANSIBLE_HOME=${HOME}/src/ansible
 export PATH=${ANSIBLE_HOME}/bin:${PATH}
 export ANSIBLE_LIBRARY=${ANSIBLE_HOME}/library
-export MANPATH=${ANSIBLE_HOME}/docs/man
+export MANPATH=${MANPATH}:${ANSIBLE_HOME}/docs/man
 export PYTHONPATH=${ANSIBLE_HOME}/lib:${PYTHONPATH}
 
 # Klarna -----------------------------------------------------------------------
