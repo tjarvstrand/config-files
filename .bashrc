@@ -51,10 +51,8 @@ set_prompt () {
     GIT=$(__git_ps1 "%s")
 
     if [[ "$GIT" =~ \*$ ]]; then
-        echo 1
         GIT_COLOR=$RED # Unstaged changes
     elif [[ "$GIT" =~ \+$ ]]; then
-        echo 2
         GIT_COLOR=$YELLOW # Staged, uncommitted changes
     else
         GIT_COLOR=$GREEN # Clean state
