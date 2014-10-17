@@ -42,6 +42,7 @@
  '(ahs-default-range (quote ahs-range-display))
  '(ahs-idle-interval 1)
  '(comment-multi-line t)
+ '(create-lockfiles nil)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(edts-inhibit-package-check t)
  '(edts-man-root "~/.emacs.d/edts/doc/R15B03")

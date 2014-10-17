@@ -2,6 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+LastRC=$?
+
 export LC_TYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
@@ -33,14 +35,48 @@ case "$TERM" in
     xterm-color) color_prompt=yes;;
 esac
 
-PS1="[\D{%T %x}]\n\W \$ "
+source ~/.git-prompt.sh
+
+set_prompt () {
+    LASTRC=$?
+    RESETCOLOR='\e[m'
+    MAGENTA="\[\033[0;35m\]"
+    RED="\[\033[1;31m\]"
+    YELLOW="\[\033[0;33m\]"
+    BLUE="\[\033[34m\]"
+    GREEN="\[\033[1;32m\]"
+
+    GIT_PS1_SHOWDIRTYSTATE=true
+    GIT_PS1_SHOWUPSTREAM=''
+    GIT=$(__git_ps1 "%s")
+
+    if [[ "$GIT" =~ \*$ ]]; then
+        echo 1
+        GIT_COLOR=$RED # Unstaged changes
+    elif [[ "$GIT" =~ \+$ ]]; then
+        echo 2
+        GIT_COLOR=$YELLOW # Staged, uncommitted changes
+    else
+        GIT_COLOR=$GREEN # Clean state
+    fi
+    GIT="$GIT_COLOR$GIT$RESETCOLOR"
+
+    if [[ $LASTRC == 0 ]]; then
+        RES="$GREEN\342\234\223$RESETCOLOR"
+    else
+        RES="$RED\342\234\227$RESETCOLOR"
+    fi
+    DATE="$BLUE\D{%T %x}$RESETCOLOR"
+    PS1="$RES [$DATE] ${GIT}\n\W \$ "
+}
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}\007"'
+    PROMPT_COMMAND='set_prompt; echo -ne "\033]0;${USER}@${HOSTNAME}\007"'
     ;;
 *)
+    PROMPT_COMMAND='set_prompt'
     ;;
 esac
 
