@@ -51,7 +51,7 @@
  '(inhibit-startup-screen t)
  '(js-indent-level 2)
  '(message-log-max 10000)
- '(safe-local-variable-values (quote ((allout-layout . t))))
+ '(safe-local-variable-values (quote ((py-smart-indentation) (python-indent . 2) (py-indent-offset . 2) (erlang-indent-level . 2) (allout-layout . t))))
  '(vc-follow-symlinks t))
 
 (getenv "EMAIL")
@@ -115,8 +115,8 @@
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 (add-hook 'yaml-mode-hook
-          '(lambda ()
-             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+          (lambda ()
+            (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

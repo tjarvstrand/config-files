@@ -1,12 +1,11 @@
 KeepAlive yes
 ServerAliveInterval 60
 ForwardAgent yes
-User thomas.jarvstrand
 
-Host 10.235.8.*
-     StrictHostKeyChecking=no
-     UserKnownHostsFile=/dev/null
+Host 10.235.16.* 10.235.8.*
+     User thomas.jarvstrand
+     StrictHostKeyChecking no
+     UserKnownHostsFile /dev/null
 
-Host 10.235.16.*
-     StrictHostKeyChecking=no
-     UserKnownHostsFile=/dev/null
+Host *.internal.machines
+     User thomas.jarvstrand

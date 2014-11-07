@@ -172,6 +172,10 @@ export PATH="${PATH}:~/bin:~/scripts:${HOME}/.erlang.d/current/bin:${HOME}/src/r
 export PATH="${HOME}/src/golang/go/bin:${PATH}"
 export GOPATH=~/src/golang/packages
 
+# Stash CLI
+export STASH_USER=thomas.jarvstrand
+export PATH="${HOME}/src/stash-cli:${HOME}/klarna/stash:${PATH}"
+
 # Conjur -----------------------------------------------------------------------
 export PATH="${PATH}:/opt/conjur/bin"
 
@@ -183,7 +187,7 @@ export MANPATH=${MANPATH}:${ANSIBLE_HOME}/docs/man
 export PYTHONPATH=${ANSIBLE_HOME}/lib:${PYTHONPATH}
 
 # Klarna -----------------------------------------------------------------------
-
+export esup=esup.cloud.internal.machines
 function cd {
   builtin cd "${@:1}"
   GIT_AUTHOR_EMAIL_ORIG=${GIT_AUTHOR_EMAIL}
