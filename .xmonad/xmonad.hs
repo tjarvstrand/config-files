@@ -5,6 +5,7 @@ import XMonad.Layout.Gaps
 import XMonad.Config.Gnome
 import XMonad.Util.EZConfig
 import XMonad.ManageHook
+import XMonad.Hooks.FadeInactive
 import XMonad.Actions.CycleWS
 import XMonad.Actions.Volume
 import XMonad.Hooks.EwmhDesktops
@@ -38,12 +39,18 @@ myManageHook =
   , className =? "Unity-2d-panel" --> doIgnore
   , className =? "Unity-2d-launcher" --> doFloat ]
 
+myLogHook :: [X ()]
+myLogHook =
+ [ fadeInactiveLogHook fadeAmount
+ , ewmhDesktopsLogHook >> setWMName "LG3D"  -- java workaround
+ ] where fadeAmount = 0.7
+
 main = xmonad $ gnomeConfig
   { modMask = mod4Mask
   , terminal = "urxvt"
   , borderWidth = 2
   , manageHook = manageHook gnomeConfig <+> composeAll myManageHook
-  , logHook = ewmhDesktopsLogHook >> setWMName "LG3D" -- java workaround
+  , logHook = composeAll myLogHook
   , layoutHook = lessBorders OnlyFloat $ avoidStruts $ myLayout
   --, startupHook = do spawn "/bin/bash ~/.xmonadrc"
   }
