@@ -1,5 +1,10 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; sudo stuff
+
+(defun kill-trailing-whitespace ()
+  (interacive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward "\s+$" nil t)
+      (replace-match "" nil nil))))
 
 (defun split-windows-to-size (size)
   (while (> (window-width) (* 2 size))

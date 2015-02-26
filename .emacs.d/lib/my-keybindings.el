@@ -26,9 +26,6 @@
 
 (global-set-key (kbd "C-x M-g") (lambda () (interactive) (goto-long-line 81)))
 
-
-(global-set-key (kbd "M-g") 'goto-line)
-
 (global-set-key (kbd "M-F") 'fullscreen-toggle)
 (global-set-key (kbd "M-R") 'revert-buffer)
 (global-set-key (kbd "M-p") 'backward-paragraph)

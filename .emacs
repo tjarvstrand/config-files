@@ -12,7 +12,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+                         ("melpa" . "http://melpa.milkbox.net/packages/")
+                         ;; ("melpa-stable" . "http://stable.melpa.org/packages/")
+                         ))
 (unless (file-directory-p "~/.emacs.d/elpa")
     (make-directory "~/.emacs.d/elpa"))
 (if (< emacs-major-version 24)
@@ -108,6 +110,7 @@
 ;; (ido-everywhere t)
 (ido-mode t)
 
+(load-library "my-clojure")
 (load-library "my-erlang")
 (load-library "my-python")
 (load-library "my-ruby")

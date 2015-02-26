@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <gconf>
-	<entry name="Animated" mtime="1403999914" type="bool" value="true"/>
-	<entry name="Shadow" mtime="1403999909" type="bool" value="true"/>
+	<entry name="Animated" mtime="1416735185" type="bool" value="false"/>
+	<entry name="Shadow" mtime="1416735172" type="bool" value="false"/>
 	<entry name="WindowRadius" mtime="1403999909" type="int" value="-1"/>
-	<entry name="BackgroundColor" mtime="1403999909" type="string">
-		<stringvalue>default</stringvalue>
+	<entry name="BackgroundColor" mtime="1416733853" type="string">
+		<stringvalue>000000F3</stringvalue>
 	</entry>
 </gconf>

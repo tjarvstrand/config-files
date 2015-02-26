@@ -69,14 +69,14 @@ set_prompt () {
 }
 
 # If this is an xterm set the title to user@host:dir
+PROMPT_COMMAND='set_prompt; history -a'
 case "$TERM" in
 xterm*|rxvt*)
-    PROMPT_COMMAND='set_prompt; echo -ne "\033]0;${USER}@${HOSTNAME}\007"'
-    ;;
-*)
-    PROMPT_COMMAND='set_prompt'
+    PROMPT_COMMAND=$PROMPT_COMMAND'; echo -ne "\033]0;${USER}@${HOSTNAME}\007"'
     ;;
 esac
+
+
 
 SSH_ENV="$HOME/.ssh/environment"
 
@@ -155,38 +155,62 @@ export PYTHONPATH=${ORIG_PYTHONPATH}
 
 
 if [[ -z $ORIG_PATH ]]; then
-   export ORIG_PATH="${PATH}"
+  export ORIG_PATH="${PATH}"
 fi
 export PATH=${ORIG_PATH}
+
+if [[ -z ${ORIG_MANPATH} ]]; then
+    if [[ -z ${MANPATH} ]]; then
+        export ORIG_MANPATH=$(manpath -q)
+    else
+        export ORIG_MANPATH=${MANPATH}
+    fi
+fi
+export MANPATH=${ORIG_MANPATH}
 
 export OTP_PATH="${HOME}/erlang/install/current"
 export PATH="${OTP_PATH}/bin:${PATH}"
 export DIALYZER_PLT="${OTP_PATH}/dialyzer.plt"
 
-#Chef
+# Chef
 export PATH="/opt/chef/bin:/opt/chef/embedded/bin:${PATH}"
-#Misc paths
+# Misc paths
 export PATH="${PATH}:~/bin:~/scripts:${HOME}/.erlang.d/current/bin:${HOME}/src/rebar"
 
 # Go
 export PATH="${HOME}/src/golang/go/bin:${PATH}"
+export GOROOT="${HOME}/src/golang/go"
 export GOPATH=~/src/golang/packages
 
 # Stash CLI
+. ${HOME}/klarna/stash/stash_user_completion
 export STASH_USER=thomas.jarvstrand
 export PATH="${HOME}/src/stash-cli:${HOME}/klarna/stash:${PATH}"
 
 # Conjur -----------------------------------------------------------------------
 export PATH="${PATH}:/opt/conjur/bin"
 
-# Ansible ----------------------------------------------------------------------
+# # Ansible ----------------------------------------------------------------------
 export ANSIBLE_HOME=${HOME}/src/ansible
 export PATH=${ANSIBLE_HOME}/bin:${PATH}
-export ANSIBLE_LIBRARY=${ANSIBLE_HOME}/library
+export ANSIBLE_LIBRARY=${ANSIBLE_HOME}/lib/ansible:${ANSIBLE_HOME}/library
 export MANPATH=${MANPATH}:${ANSIBLE_HOME}/docs/man
 export PYTHONPATH=${ANSIBLE_HOME}/lib:${PYTHONPATH}
 
+# Java -------------------------------------------------------------------------
+export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:bin/javac::")
+export PATH=${PATH}:${JAVA_HOME}/bin
+
+
+# Coursera algorithms, Part 1 --------------------------------------------------
+export PATH=${PATH}:${HOME}/algs4/bin
+
+# Riak -------------------------------------------------------------------------
+ulimit -n 65536
+
 # Klarna -----------------------------------------------------------------------
+export CURL_CA_BUNDLE=/home/tjarvstrand/klarna/klarna-ca-cert.pem
+export SSL_CERT_FILE=/home/tjarvstrand/klarna/klarna-ca-cert.pem
 export esup=esup.cloud.internal.machines
 function cd {
   builtin cd "${@:1}"
@@ -205,13 +229,18 @@ function cd {
 }
 cd $PWD
 
+alias pulp-admin='docker run --net=host -it --rm -v ${HOME}/.pulp:/root/.pulp -v ${PWD}:/tmp/uploads klarna/pulp-admin'
+
 # Paths
-export PATH="${PATH}:~/klarna/fred/fred_platform/bin:~/klarna/fred/gitrdun/bin"
-export PATH="${PATH}:~/klarna/chef/berksenv"
-export PATH="${PATH}:~/klarna/cloudstack/orchid/bin"
+export PATH="${PATH}:${HOME}/klarna/fred/fred_platform/bin:~/klarna/fred/gitrdun/bin"
+export PATH="${PATH}:${HOME}/klarna/chef/berksenv"
+export PATH="${PATH}:${HOME}/klarna/cloud/orchid/bin"
+# Demo remove me!
+export PATH="${PATH}:${HOME}/klarna/chef/naked-chef"
 
 # Env
 # Make sure to use kernel_poll
 export KRED_POLL=true
 export IGNORE_FORCE_BACKUP=true
 export KRED_SKIP_SUBMODULE_UPDATE=true
+

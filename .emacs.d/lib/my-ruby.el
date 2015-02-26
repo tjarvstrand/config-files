@@ -14,3 +14,7 @@
 
 (setq ruby-insert-encoding-magic-comment nil)
 (setq ruby-indent-level 2)
+
+(add-to-list 'auto-mode-alist '("\\.gemspec$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile\\.lock" . ruby-mode))
