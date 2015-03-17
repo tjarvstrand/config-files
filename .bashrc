@@ -40,6 +40,7 @@ source ~/.git-prompt.sh
 set_prompt () {
     LASTRC=$?
     RESETCOLOR='\e[m'
+    CYAN="\[\033[0;36m\]"
     MAGENTA="\[\033[0;35m\]"
     RED="\[\033[1;31m\]"
     YELLOW="\[\033[0;33m\]"
@@ -64,12 +65,12 @@ set_prompt () {
     else
         RES="$RED\342\234\227$RESETCOLOR"
     fi
-    DATE="$BLUE\D{%T %x}$RESETCOLOR"
+    DATE="$CYAN\D{%T %x}$RESETCOLOR"
     PS1="$RES [$DATE] ${GIT}\n\W \$ "
 }
 
 # If this is an xterm set the title to user@host:dir
-PROMPT_COMMAND='set_prompt; history -a'
+PROMPT_COMMAND='set_prompt'
 case "$TERM" in
 xterm*|rxvt*)
     PROMPT_COMMAND=$PROMPT_COMMAND'; echo -ne "\033]0;${USER}@${HOSTNAME}\007"'
