@@ -191,10 +191,9 @@ export PATH="${HOME}/src/stash-cli:${HOME}/klarna/stash:${PATH}"
 # Conjur -----------------------------------------------------------------------
 export PATH="${PATH}:/opt/conjur/bin"
 
-# # Ansible ----------------------------------------------------------------------
+# Ansible ----------------------------------------------------------------------
 export ANSIBLE_HOME=${HOME}/src/ansible
 export PATH=${ANSIBLE_HOME}/bin:${PATH}
-export ANSIBLE_LIBRARY=${ANSIBLE_HOME}/lib/ansible:${ANSIBLE_HOME}/library
 export MANPATH=${MANPATH}:${ANSIBLE_HOME}/docs/man
 export PYTHONPATH=${ANSIBLE_HOME}/lib:${PYTHONPATH}
 
