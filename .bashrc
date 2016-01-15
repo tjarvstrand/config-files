@@ -4,6 +4,8 @@
 
 LastRC=$?
 
+deactivate 2>/dev/null
+
 export LC_TYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
@@ -34,6 +36,12 @@ shopt -s checkwinsize
 case "$TERM" in
     xterm-color) color_prompt=yes;;
 esac
+
+function aws_adfs_prompt() {
+  if [[ -n $AWS_SESSION_EXPIRATION_TIME ]] && [[ $AWS_SESSION_EXPIRATION_TIME -gt $(date +%s) ]]; then
+    echo "[$AWS_PROFILE ($(( ($AWS_SESSION_EXPIRATION_TIME - $(date -u +%s)) / 60)) minute(s) remaining)]"
+  fi
+}
 
 source ~/.git-prompt.sh
 
@@ -174,22 +182,19 @@ export PATH="${OTP_PATH}/bin:${PATH}"
 export DIALYZER_PLT="${OTP_PATH}/dialyzer.plt"
 
 # Chef
-export PATH="/opt/chef/bin:/opt/chef/embedded/bin:${PATH}"
+#export PATH="/opt/chef/bin:/opt/chef/embedded/bin:${PATH}"
 # Misc paths
-export PATH="${PATH}:~/bin:~/scripts:${HOME}/.erlang.d/current/bin:${HOME}/src/rebar"
+export PATH="${PATH}:~/bin:~/scripts:${HOME}/.erlang.d/current/bin"
+#:${HOME}/src/rebar"
 
 # Go
-export PATH="${HOME}/src/golang/go/bin:${PATH}"
 export GOROOT="${HOME}/src/golang/go"
-export GOPATH=~/src/golang/packages
+export GOPATH="${HOME}/src/golang/packages"
+export PATH="${GOROOT}/bin:${GOPATH}/bin:${PATH}"
 
 # Stash CLI
-. ${HOME}/klarna/stash/stash_user_completion
 export STASH_USER=thomas.jarvstrand
 export PATH="${HOME}/src/stash-cli:${HOME}/klarna/stash:${PATH}"
-
-# Conjur -----------------------------------------------------------------------
-export PATH="${PATH}:/opt/conjur/bin"
 
 # Ansible ----------------------------------------------------------------------
 export ANSIBLE_HOME=${HOME}/src/ansible
@@ -202,34 +207,129 @@ export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:bin/javac::")
 export PATH=${PATH}:${JAVA_HOME}/bin
 
 
-# Coursera algorithms, Part 1 --------------------------------------------------
-export PATH=${PATH}:${HOME}/algs4/bin
-
 # Riak -------------------------------------------------------------------------
 ulimit -n 65536
 
+# # Python -----------------------------------------------------------------------
+. ${HOME}/.virtualenv/bin/activate
+
 # Klarna -----------------------------------------------------------------------
-export CURL_CA_BUNDLE=/home/tjarvstrand/klarna/klarna-ca-cert.pem
-export SSL_CERT_FILE=/home/tjarvstrand/klarna/klarna-ca-cert.pem
+export ERL_LIBS=${HOME}/klarna/quickcheck
+export KRED_SKIP_SUBMODULE_UPDATE=TRUE
 export esup=esup.cloud.internal.machines
+export esup_oncall="lars.sjostrom johan.wiren martin.wilhelm mats.westin sandor.bodor jefferson.girao"
+export burrus="fredrik.lindberg jimmy.zoger eduard.zamora"
+export fred="vadym.khatsanovskyy samuel.strand enrique.fernandez nuno.marques andre.goncalves howard.beard-marlowe"
+GIT_AUTHOR_NAME="Thomas Järvstrand"
+GIT_COMMITTER_NAME="Thomas Järvstrand"
 function cd {
   builtin cd "${@:1}"
+  GIT_COMMITTER_EMAIL_ORIG=${GIT_COMMITTER_EMAIL}
   GIT_AUTHOR_EMAIL_ORIG=${GIT_AUTHOR_EMAIL}
   if [[ -n "${PWD}" ]]; then
     if [[ "$(readlink -f ${PWD})" == *"$HOME/klarna"* ]]; then
+        GIT_COMMITTER_EMAIL_NEW=${KLARNA_EMAIL}
         GIT_AUTHOR_EMAIL_NEW=${KLARNA_EMAIL}
     else
+        GIT_COMMITTER_EMAIL_NEW=${EMAIL}
         GIT_AUTHOR_EMAIL_NEW=${EMAIL}
     fi
     if [[ "${GIT_AUTHOR_EMAIL_NEW}" != "${GIT_AUTHOR_EMAIL}" ]]; then
+        export GIT_COMMITTER_EMAIL=${GIT_COMMITTER_EMAIL_NEW}
         export GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL_NEW}
-        echo GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL_NEW}
+        echo git email: ${GIT_AUTHOR_EMAIL_NEW}
     fi
   fi
 }
 cd $PWD
 
+# export AWS_ENV=${HOME}/.aws/adfs-env
+# function aws-with-adfs {
+#     source ${AWS_ENV} 2>/dev/null
+#     EXPIRY=$(((${AWS_SESSION_EXPIRATION_TIME} - $(date -u +%s)) / 60))
+#     if [ ${EXPIRY} -le 0 ]; then
+#         RES=$($(which aws-adfs-login))
+#         RET=${?}
+#         if [[ "${RET}" == "0" ]]; then
+#             eval $(echo ${RES} | tee ${AWS_ENV})
+#         else
+#             echo ${RES}
+#             return ${RET}
+#         fi
+#     fi
+#     EXPIRY=$(((${AWS_SESSION_EXPIRATION_TIME} - $(date -u +%s)) / 60))
+#     echo "Session expires in ${EXPIRY} minutes"
+#     if [ $# -ne 0 ]; then
+#         $(which aws) ${@}
+#     fi
+# }
+
+# alias aws='aws-with-adfs'
+# export AD_USERNAME=thomas.jarvstrand
+#export AWS_DEFAULT_PROFILE=Klarna_ADFS_admin@eu-non-production-klarna
+export AWS_DEFAULT_PROFILE=kasper-non-prod
+
+function pr {
+    stash pr create ${1:-${burrus}} ${@:2}
+}
+
+function otp {
+    if [[ ! $1 ]]; then
+        CURRENT=$(readlink "${HOME}/.erlang.d/current" | sed s:.*/::)
+        echo "${CURRENT}"
+        OTP_VERSIONS=($(find ${HOME}/.erlang.d -maxdepth 1 -mindepth 1 -type d -printf %f\\n))
+        COUNT=${#OTP_VERSIONS[@]}
+        for i in $(seq 0 $((${COUNT} -1))); do
+            OUT="$i. ${OTP_VERSIONS[${i}]}"
+            if [[ "${CURRENT}" == "${OTP_VERSIONS[${i}]}" ]]; then
+                DEFAULT=${i}
+                OUT="\e[7m${OUT}\e[27m"
+            fi
+            echo -e "${OUT}"
+        done
+        read -p "Choose version ($DEFAULT): " VERSION
+        if [[ ! ${VERSION} ]]; then
+            VERSION=${DEFAULT}
+        fi
+        if [[ "${VERSION}" == "${DEFAULT}" ]]; then
+            echo "Keeping OTP version ${OTP_VERSIONS[${VERSION}]}"
+        else
+            ln -sfvT ${HOME}/.erlang.d/${OTP_VERSIONS[${VERSION}]} ${HOME}/.erlang.d/current
+            echo "Switched to OTP version ${OTP_VERSIONS[${VERSION}]}"
+        fi
+    fi
+}
+
+function dirty {
+    for dir in $1/*; do
+        if [[ -d ${dir} ]]; then
+            pushd ${dir} > /dev/null
+            if ! $(git diff --no-ext-diff --quiet); then
+                echo ${dir}
+            fi
+            popd > /dev/null
+        fi
+    done
+}
+
+function branches {
+    branches=""
+    for dir in $1/*; do
+        if [[ -d ${dir} ]]; then
+            pushd ${dir} > /dev/null
+            branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+            if [[ "${branch}" != "master" && ! "${branch}" =~ ^\(detached ]]; then
+                branches="${branches}\n${dir} ${branch}"
+            fi
+            popd > /dev/null
+        fi
+    done
+    echo -e ${branches} | column -t -s ' '
+}
+
+
 alias pulp-admin='docker run --net=host -it --rm -v ${HOME}/.pulp:/root/.pulp -v ${PWD}:/tmp/uploads klarna/pulp-admin'
+
 
 # Paths
 export PATH="${PATH}:${HOME}/klarna/fred/fred_platform/bin:~/klarna/fred/gitrdun/bin"

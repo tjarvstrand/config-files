@@ -30,6 +30,7 @@
 (load-library "my-misc")
 (load-library "misc-cmds")
 (load-library "show-point-mode")
+(load-library "mismatched-parens")
 
 (toggle-buffer-tail "*Messages*" "on")
 
@@ -134,3 +135,26 @@
 (put 'narrow-to-region 'disabled nil)
 
 (setq ac-auto-show-menu t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; VC Git
+(defadvice vc-git-working-revision (around vc-git-working-revision-detached activate)
+  "Get the git working revision when detached"
+  ad-do-it
+  (when (string= ad-return-value "")
+    (setq ad-return-value
+          (with-output-to-string
+            (with-current-buffer standard-output
+              (vc-git--out-ok "describe" "--tags" "--exact-match" "HEAD")))))
+  (when (string= ad-return-value "")
+    (setq ad-return-value
+          (with-output-to-string
+            (with-current-buffer standard-output
+              (vc-git--out-ok "rev-parse" "HEAD")))))
+  (setq ad-return-value (replace-regexp-in-string "\n$" "" ad-return-value)))
+(ad-activate 'vc-git-working-revision t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Comint
+(setq comint-buffer-maximum-size 15000)
+(add-hook 'comint-output-filter-functions 'comint-truncate-buffer)

@@ -5,9 +5,13 @@
 (color-theme-my-theme)
 
 ;; Set font
+(defun set-font-size (size)
+  (interactive "nSize: ")
+  (set-frame-font (format "Ubuntu Mono-%s" size)))
+
 (if (string= "brunsnultra" (system-name))
-   (set-frame-font "Ubuntu Mono-10" t)
-  (set-frame-font "Ubuntu Mono-9"))
+    (set-font-size 10)
+  (set-font-size 9))
 
 (global-font-lock-mode t)
 

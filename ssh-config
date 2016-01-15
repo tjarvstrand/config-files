@@ -2,7 +2,7 @@ KeepAlive yes
 ServerAliveInterval 60
 ForwardAgent yes
 
-Host 10.235.16.* 10.235.8.* *.esup.cloud.internal.machines
+Host 10.225.* 10.226.* 10.235.16.* 10.235.8.* *.esup.cloud.internal.machines
      User thomas.jarvstrand
      StrictHostKeyChecking no
      UserKnownHostsFile /dev/null
