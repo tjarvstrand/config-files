@@ -14,14 +14,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; EDTS
 (add-to-list 'load-path "~/src/edts")
+(defun my-after-init-erlang-hook ()
+  (require 'edts-start))
 (require 'edts-start)
-
-
-;;(require 'edts-start)
-;; (require 'auto-complete-config)
-;; (add-to-list 'load-path "~/elisp/yasnippet")
-;; (require 'yasnippet)
-;; (yas-global-mode 1)
+(add-hook 'after-init-hook 'my-after-init-erlang-hook)
 
 ;; (edts-log-set-level 'debug)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
