@@ -2,18 +2,15 @@ import XMonad
 import qualified XMonad.StackSet as W
 
 import XMonad.Layout.Gaps
-import XMonad.Config.Gnome
+import XMonad.Config.Xfce
 import XMonad.Util.EZConfig
 import XMonad.ManageHook
-import XMonad.Hooks.FadeInactive
-import XMonad.Actions.CycleWS
-import XMonad.Actions.Volume
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.NoBorders
-
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.CycleWindows
 
 myLayout = smartBorders tiled |||
@@ -35,28 +32,29 @@ myLayout = smartBorders tiled |||
 myManageHook :: [ManageHook]
 myManageHook =
   [ resource =? "Do" --> doIgnore
-  , isFullscreen --> doFullFloat
-  , className =? "Unity-2d-panel" --> doIgnore
-  , className =? "Unity-2d-launcher" --> doFloat ]
+  -- , isFullscreen --> doFullFloat
+  -- , isDialog --> doFloat
+  , className =? "vlc" --> doFullFloat
+  , className =? "Xfce4-panel" --> doIgnore
+  , className =? "Xfce4-notifyd" --> doIgnore
+  , manageDocks]
 
 myLogHook :: [X ()]
 myLogHook =
- [ fadeInactiveLogHook fadeAmount
- , ewmhDesktopsLogHook >> setWMName "LG3D"  -- java workaround
- ] where fadeAmount = 0.7
+ [ ewmhDesktopsLogHook >> setWMName "LG3D"  -- java workaround
+ ]
 
-main = xmonad $ gnomeConfig
+main = xmonad $ xfceConfig
   { modMask = mod4Mask
   , terminal = "urxvt"
   , borderWidth = 2
-  , manageHook = manageHook gnomeConfig <+> composeAll myManageHook
+  , manageHook = manageHook xfceConfig <+> composeAll myManageHook
+  , handleEventHook = ewmhDesktopsEventHook <+> fullscreenEventHook
   , logHook = composeAll myLogHook
   , layoutHook = lessBorders OnlyFloat $ avoidStruts $ myLayout
-  --, startupHook = do spawn "/bin/bash ~/.xmonadrc"
+  , startupHook = do spawn "/bin/bash ~/.xmonadrc"
   }
   `additionalKeysP`
     [ ("M1-<Tab>",  windows W.focusDown)
-    , ("C-<Return>", spawn "gnome-do")
-    , ("M1-<Up>", raiseVolume 4 >> return ())
-    , ("M1-<Down>", lowerVolume 4 >> return ())
+    -- , ("C-<Return>", spawn "gnome-do")
     ]
