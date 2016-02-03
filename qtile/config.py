@@ -52,10 +52,13 @@ keys = [
     Key([mod], "h", lazy.layout.grow()),
     Key([mod], "l", lazy.layout.shrink()),
 
-    Key(["control", alt], "l", lazy.spawn("light-locker-command -l"))
+    Key(["control", alt], "l", lazy.spawn("light-locker-command -l")),
+
+    Key([], "XF86Display", lazy.spawn("scr auto")),
+    Key([], "XF86WLAN", lazy.spawn("toggle-wifi"))
 ]
 
-groups = [Group(i) for i in "1234567890"]
+groups = [Group(i) for i in "12345"]
 
 for i in groups:
     # mod1 + letter of group = switch to group
@@ -75,6 +78,7 @@ widget_defaults = dict(
     font='monospace',
     fontsize=11,
     padding=0,
+    margin_x = 2
 )
 
 #workaround for bad aptitude query
@@ -102,17 +106,19 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
+                widget.AGroupBox(margin_x = 2, padding_x = 8, border = '777777'),
+                widget.Sep(margin_x = 2, foreground = '555555'),
+                widget.WindowName(padding = 4, width = bar.CALCULATED),
+                widget.Sep(padding = 8, foreground = '555555'),
+                widget.Prompt(prompt = "run: ", background = '000000'),
+                widget.Spacer(),
                 widget.KeyboardLayout(configured_keyboards = ["se", "custom"]),
                 widget.Sep(padding = 8, foreground = '555555'),
-                widget.Battery(),
                 widget.CPUGraph(),
                 CheckUpdates(distro = 'Ubuntu',
                              display_format = '{updates} updates',
                              update_interval = 600,
-                             execute = 'terminator --command="sudo apt-get upgrade"'),
+                             execute = 'terminator --command="sudo apt-get -y --with-new-pkgs upgrade; read"'),
                 #widget.CheckUpdates(distro = 'Ubuntu', display_format = '{updates} updates'),
                 widget.Sep(padding = 8, foreground = '555555'),
                 widget.Systray(),
@@ -120,9 +126,39 @@ screens = [
                 widget.Clock(fontsize = 12, format='%H:%M'),
             ],
             20,
-            background = '222222'
+            background = '222222',
+            opacity = 0.8
         ),
     ),
+
+    Screen(
+        top=bar.Bar(
+            [
+                widget.GroupBox(),
+                widget.Sep(padding = 8, foreground = '555555'),
+                widget.WindowName(width = bar.CALCULATED),
+                widget.Sep(padding = 8, foreground = '555555'),
+                widget.Prompt(prompt = "run: ", background = '000000'),
+                widget.Spacer(),
+                widget.KeyboardLayout(configured_keyboards = ["se", "custom"]),
+                widget.Sep(padding = 8, foreground = '555555'),
+                widget.Battery(),
+                widget.CPUGraph(),
+                CheckUpdates(distro = 'Ubuntu',
+                             display_format = '{updates} updatesa',
+                             update_interval = 600,
+                             execute = 'terminator --command="sudo apt-get -y --with-new-pkgs upgrade; read"'),
+                #widget.CheckUpdates(distro = 'Ubuntu', display_format = '{updates} updates'),
+                widget.Sep(padding = 8, foreground = '555555'),
+                widget.Systray(),
+                widget.Sep(padding = 8, foreground = '555555'),
+                widget.Clock(fontsize = 12, format='%H:%M'),
+            ],
+            20,
+            background = '222222',
+            opacity = 0.8
+        ),
+    )
 ]
 
 # Drag floating layouts.
