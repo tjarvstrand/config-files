@@ -30,7 +30,7 @@
 (load-library "my-misc")
 (load-library "misc-cmds")
 (load-library "show-point-mode")
-(load-library "mismatched-parens")
+;(load-library "mismatched-parens")
 
 (toggle-buffer-tail "*Messages*" "on")
 
