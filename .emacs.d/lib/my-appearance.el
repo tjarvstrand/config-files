@@ -29,11 +29,11 @@
 ;;   (frame-configuration-to-register th-frame-config-register))
 
 ;; Set fullscreen
-(when x-session-id
-  (require 'fullscreen)
-  (setq default-frame-alist
-        '((top . 10) (left . 2)))
-  (fullscreen))
+;; (when x-session-id
+;;   (require 'fullscreen)
+;;   (setq default-frame-alist
+;;         '((top . 10) (left . 2)))
+;;   (fullscreen))
 
 (run-with-timer 0.2 nil #'(lambda () (split-windows-to-size 80)))
 

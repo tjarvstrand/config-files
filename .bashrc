@@ -308,6 +308,8 @@ function dirty {
                 echo ${dir}
             fi
             popd > /dev/null
+        else
+            echo "No such directory"
         fi
     done
 }
@@ -322,6 +324,8 @@ function branches {
                 branches="${branches}\n${dir} ${branch}"
             fi
             popd > /dev/null
+        else
+            echo "No such directory"
         fi
     done
     echo -e ${branches} | column -t -s ' '

@@ -26,7 +26,7 @@
 
 from libqtile.config import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
-from libqtile import layout, bar, widget
+from libqtile import layout, bar, hook, widget
 
 import libqtile.layout.xmonad
 
@@ -49,8 +49,8 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown()),
     Key([mod], "r", lazy.spawncmd()),
 
-    Key([mod], "h", lazy.layout.grow()),
-    Key([mod], "l", lazy.layout.shrink()),
+    Key([mod], "l", lazy.layout.grow_main()),
+    Key([mod], "h", lazy.layout.shrink_main()),
 
     Key(["control", alt], "l", lazy.spawn("light-locker-command -l")),
 
@@ -81,27 +81,6 @@ widget_defaults = dict(
     margin_x = 2
 )
 
-#workaround for bad aptitude query
-class CheckUpdates(widget.CheckUpdates):
-    def __init__(self, **config):
-        widget.CheckUpdates.__init__(self, **config)
-        self.cmd = ['aptitude', 'search', '~U']
-        self.subtr = 0
-
-#workaround for bad property accessor
-class KeyboardLayout(widget.KeyboardLayout):
-
-    def next_keyboard(self):
-        current_keyboard = self.keyboard
-        if current_keyboard in self.configured_keyboards:
-            # iterate the list circularly
-            next_keyboard = self.configured_keyboards[
-                (self.configured_keyboards.index(current_keyboard) + 1) %
-                len(self.configured_keyboards)]
-        else:
-            next_keyboard = self.configured_keyboards[0]
-        self.keyboard = next_keyboard
-
 screens = [
     Screen(
         top=bar.Bar(
@@ -115,44 +94,14 @@ screens = [
                 widget.KeyboardLayout(configured_keyboards = ["se", "custom"]),
                 widget.Sep(padding = 8, foreground = '555555'),
                 widget.CPUGraph(),
-                CheckUpdates(distro = 'Ubuntu',
-                             display_format = '{updates} updates',
-                             update_interval = 600,
-                             execute = 'terminator --command="sudo apt-get -y --with-new-pkgs upgrade; read"'),
-                #widget.CheckUpdates(distro = 'Ubuntu', display_format = '{updates} updates'),
+                widget.CheckUpdates(distro = 'Ubuntu',
+                                    display_format = '{updates} updates',
+                                    update_interval = 600,
+                                    execute = 'terminator --command="apt-upgrade; read"'),
                 widget.Sep(padding = 8, foreground = '555555'),
                 widget.Systray(),
                 widget.Sep(padding = 8, foreground = '555555'),
-                widget.Clock(fontsize = 12, format='%H:%M'),
-            ],
-            20,
-            background = '222222',
-            opacity = 0.8
-        ),
-    ),
-
-    Screen(
-        top=bar.Bar(
-            [
-                widget.GroupBox(),
-                widget.Sep(padding = 8, foreground = '555555'),
-                widget.WindowName(width = bar.CALCULATED),
-                widget.Sep(padding = 8, foreground = '555555'),
-                widget.Prompt(prompt = "run: ", background = '000000'),
-                widget.Spacer(),
-                widget.KeyboardLayout(configured_keyboards = ["se", "custom"]),
-                widget.Sep(padding = 8, foreground = '555555'),
-                widget.Battery(),
-                widget.CPUGraph(),
-                CheckUpdates(distro = 'Ubuntu',
-                             display_format = '{updates} updatesa',
-                             update_interval = 600,
-                             execute = 'terminator --command="sudo apt-get -y --with-new-pkgs upgrade; read"'),
-                #widget.CheckUpdates(distro = 'Ubuntu', display_format = '{updates} updates'),
-                widget.Sep(padding = 8, foreground = '555555'),
-                widget.Systray(),
-                widget.Sep(padding = 8, foreground = '555555'),
-                widget.Clock(fontsize = 12, format='%H:%M'),
+                widget.Clock(fontsize = 12, format='%b %d,%H:%M '),
             ],
             20,
             background = '222222',
@@ -179,6 +128,12 @@ cursor_warp = False
 floating_layout = layout.Floating()
 auto_fullscreen = True
 
+@hook.subscribe.screen_change
+def restart_on_randr(qtile, ev):
+    qtile.cmd_restart()
+
+
+
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
 # mailing lists, github issues, and other WM documentation that suggest setting
@@ -202,7 +157,9 @@ startup_apps = [lambda: sh.wmname(wmname),
                 ensure_running("xfce4-volumed", lambda: sh.xfce4_volumed(_bg=True)),
                 ensure_running("xfce4-power-manager", lambda: sh.xfce4_power_manager(_bg=True)),
                 ensure_running("light-locker", lambda: sh.light_locker(_bg=True)),
-                lambda: sh.dropbox("start", _bg=True)]
+                lambda: sh.dropbox("start", _bg=True),
+                # TODO Remove the below
+                lambda: sh.setxkbmap("-layout", "custom", "-option", "caps:ctrl_modifier")]
 
 for start_app in startup_apps:
     start_app()
