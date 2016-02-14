@@ -177,7 +177,7 @@ if [[ -z ${ORIG_MANPATH} ]]; then
 fi
 export MANPATH=${ORIG_MANPATH}
 
-export OTP_PATH="${HOME}/erlang/install/current"
+export OTP_PATH="${HOME}/erlang.d/install/current"
 export PATH="${OTP_PATH}/bin:${PATH}"
 export DIALYZER_PLT="${OTP_PATH}/dialyzer.plt"
 
@@ -299,38 +299,6 @@ function otp {
         fi
     fi
 }
-
-function dirty {
-    for dir in $1/*; do
-        if [[ -d ${dir} ]]; then
-            pushd ${dir} > /dev/null
-            if ! $(git diff --no-ext-diff --quiet); then
-                echo ${dir}
-            fi
-            popd > /dev/null
-        else
-            echo "No such directory"
-        fi
-    done
-}
-
-function branches {
-    branches=""
-    for dir in $1/*; do
-        if [[ -d ${dir} ]]; then
-            pushd ${dir} > /dev/null
-            branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
-            if [[ "${branch}" != "master" && ! "${branch}" =~ ^\(detached ]]; then
-                branches="${branches}\n${dir} ${branch}"
-            fi
-            popd > /dev/null
-        else
-            echo "No such directory"
-        fi
-    done
-    echo -e ${branches} | column -t -s ' '
-}
-
 
 alias pulp-admin='docker run --net=host -it --rm -v ${HOME}/.pulp:/root/.pulp -v ${PWD}:/tmp/uploads klarna/pulp-admin'
 
