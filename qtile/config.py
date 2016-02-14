@@ -68,9 +68,7 @@ for i in groups:
     keys.append(Key([mod, "shift"], i.name, lazy.window.togroup(i.name)))
 
 layouts = [
-    libqtile.layout.xmonad.MonadTall(ratio = 0.66,
-                                     border_width = 1,
-                                     single_border_width = 0),
+    libqtile.layout.xmonad.MonadTall(ratio = 0.66, border_width = 1, single_border_width = 0),
     layout.Max()
 ]
 
@@ -97,7 +95,7 @@ screens = [
                 widget.CheckUpdates(distro = 'Ubuntu',
                                     display_format = '{updates} updates',
                                     update_interval = 600,
-                                    execute = 'terminator --command="apt-upgrade; read"'),
+                                    execute = 'terminator --command="apt-upgrade && echo Upgrade done; read"'),
                 widget.Sep(padding = 8, foreground = '555555'),
                 widget.Systray(),
                 widget.Sep(padding = 8, foreground = '555555'),
