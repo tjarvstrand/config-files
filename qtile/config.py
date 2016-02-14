@@ -152,8 +152,8 @@ def ensure_running(proc_name, run_proc):
 
 startup_apps = [lambda: sh.wmname(wmname),
                 ensure_running("nm-applet", lambda: sh.nm_applet(_bg=True)),
-                ensure_running("xfce4-volumed", lambda: sh.xfce4_volumed(_bg=True)),
-                ensure_running("xfce4-power-manager", lambda: sh.xfce4_power_manager(_bg=True)),
+                #ensure_running("xfce4-volumed", lambda: sh.xfce4_volumed(_bg=True)),
+                #ensure_running("xfce4-power-manager", lambda: sh.xfce4_power_manager(_bg=True)),
                 ensure_running("light-locker", lambda: sh.light_locker(_bg=True)),
                 lambda: sh.dropbox("start", _bg=True),
                 # TODO Remove the below
