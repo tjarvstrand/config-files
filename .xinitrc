@@ -1,4 +1,2 @@
-#!/usr/bin/env bash
 
-syndaemon -d -i 1.0 -R p ~/.syndaemon.pid
-setxkbmap -option ctrl:nocaps
+#export GTK2_RC_FILES="/home/tjarvstrand/Dropbox/.themes/Ambiance dark/gtk-2.0/gtkrc"
