@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-	<entry name="IncludeHiddenFiles" mtime="1404074807" type="bool" value="false"/>
-	<entry name="LimitMaximumFilesIndexed" mtime="1404074807" type="bool" value="true"/>
-</gconf>

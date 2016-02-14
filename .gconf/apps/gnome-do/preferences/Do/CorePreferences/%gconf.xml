@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-	<entry name="QuietStart" mtime="1404074148" type="bool" value="true"/>
-	<entry name="Theme" mtime="1416735229" type="string">
-		<stringvalue>Mini</stringvalue>
-	</entry>
-</gconf>
