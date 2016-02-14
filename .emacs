@@ -49,12 +49,19 @@
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(edts-inhibit-package-check t)
  '(edts-man-root "~/.emacs.d/edts/doc/R15B03")
+ '(electric-indent-mode nil)
  '(epushover-token "8voZIQ79jOdclr92TizvFcVr84gpnb")
  '(epushover-user-key "iExDziORD2VAffHJFa4nHh5BKlOYwZ")
  '(inhibit-startup-screen t)
  '(js-indent-level 2)
  '(message-log-max 10000)
- '(safe-local-variable-values (quote ((py-smart-indentation) (python-indent . 2) (py-indent-offset . 2) (erlang-indent-level . 2) (allout-layout . t))))
+ '(safe-local-variable-values
+   (quote
+    ((py-smart-indentation)
+     (python-indent . 2)
+     (py-indent-offset . 2)
+     (erlang-indent-level . 2)
+     (allout-layout . t))))
  '(vc-follow-symlinks t))
 
 (getenv "EMAIL")
