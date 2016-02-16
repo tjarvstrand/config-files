@@ -102,8 +102,7 @@ screens = [
                 widget.Clock(fontsize = 12, format='%b %d,%H:%M '),
             ],
             20,
-            background = '222222',
-            opacity = 0.8
+            background = '111111'
         ),
     )
 ]
