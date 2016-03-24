@@ -10,3 +10,4 @@
 .xmonad/xmonad.o
 .xchat2/scrollback
 **/*.pyc
+*.beam

@@ -1,7 +1,6 @@
 Home = os:getenv("HOME").
-code:add_path(Home ++ "/src/erlang/user_default").
 case code:where_is_file("redbug.beam") of
      non_existing -> code:add_path(Home ++ "/src/eper/ebin");
      _            -> ok
 end.
-code:load_file(user_default).
+c:c(Home ++ "/config-files/user_default.erl", [{outdir, Home ++ "/config-files"}]).
