@@ -25,6 +25,7 @@
 # SOFTWARE.
 
 from libqtile.config import Key, Screen, Group, Drag, Click
+from libqtile.log_utils import logger
 from libqtile.command import lazy
 from libqtile import layout, bar, hook, widget
 
@@ -43,16 +44,18 @@ keys = [
     # Toggle between different layouts as defined below
     Key([mod], "space", lazy.next_layout()),
     Key([mod], "Return", lazy.layout.swap_main()),
-    Key([mod], "w", lazy.window.kill()),
+    Key([mod], "l", lazy.layout.grow_main()),
+    Key([mod], "h", lazy.layout.shrink_main()),
+    Key([mod], "f", lazy.layout.flip()),
 
     Key([mod, "control"], "r", lazy.restart()),
     Key([mod, "control"], "q", lazy.shutdown()),
-    Key([mod], "r", lazy.spawncmd()),
+    # Key([mod], "r", lazy.spawncmd()),
 
-    Key([mod], "l", lazy.layout.grow_main()),
-    Key([mod], "h", lazy.layout.shrink_main()),
 
+    Key([mod], "w", lazy.window.kill()),
     Key(["control", alt], "l", lazy.spawn("light-locker-command -l")),
+    Key(["control"], "Return", lazy.spawn("dmenu_run_history -b -i")),
 
     Key([], "XF86Display", lazy.spawn("scr auto")),
     Key([], "XF86WLAN", lazy.spawn("toggle-wifi"))
@@ -68,7 +71,10 @@ for i in groups:
     keys.append(Key([mod, "shift"], i.name, lazy.window.togroup(i.name)))
 
 layouts = [
-    libqtile.layout.xmonad.MonadTall(ratio = 0.66, border_width = 1, single_border_width = 0),
+    libqtile.layout.xmonad.MonadTall(ratio = 0.66,
+                                     border_width = 1,
+                                     single_border_width = 0,
+                                        new_window_replaces_current = True),
     layout.Max()
 ]
 
@@ -86,8 +92,8 @@ screens = [
                 widget.AGroupBox(margin_x = 2, padding_x = 8, border = '777777'),
                 widget.Sep(margin_x = 2, foreground = '555555'),
                 widget.WindowName(padding = 4, width = bar.CALCULATED),
-                widget.Sep(padding = 8, foreground = '555555'),
-                widget.Prompt(prompt = "run: ", background = '000000'),
+                # widget.Sep(padding = 8, foreground = '555555'),
+                # widget.Prompt(prompt = "run: ", background = '000000'),
                 widget.Spacer(),
                 widget.KeyboardLayout(configured_keyboards = ["se", "custom"]),
                 widget.Sep(padding = 8, foreground = '555555'),
@@ -95,7 +101,10 @@ screens = [
                 widget.CheckUpdates(distro = 'Ubuntu',
                                     display_format = '{updates} updates',
                                     update_interval = 600,
-                                    execute = 'terminator --command="apt-upgrade && echo Upgrade done; read"'),
+                                    execute = 'terminator --command="sudo apt-get update && apt-upgrade && echo Upgrade done; read"',
+                                    hide_on_no_updates = True,
+                                    update_after_execute = True
+                                        ),
                 widget.Sep(padding = 8, foreground = '555555'),
                 widget.Systray(),
                 widget.Sep(padding = 8, foreground = '555555'),
@@ -151,8 +160,9 @@ def ensure_running(proc_name, run_proc):
 
 startup_apps = [lambda: sh.wmname(wmname),
                 ensure_running("nm-applet", lambda: sh.nm_applet(_bg=True)),
-                #ensure_running("xfce4-volumed", lambda: sh.xfce4_volumed(_bg=True)),
-                #ensure_running("xfce4-power-manager", lambda: sh.xfce4_power_manager(_bg=True)),
+                # TODO Run these from the xsession or something
+                ensure_running("xfce4-volumed", lambda: sh.xfce4_volumed(_bg=True)),
+                ensure_running("xfce4-power-manager", lambda: sh.xfce4_power_manager(_bg=True)),
                 ensure_running("light-locker", lambda: sh.light_locker(_bg=True)),
                 lambda: sh.dropbox("start", _bg=True),
                 # TODO Remove the below
