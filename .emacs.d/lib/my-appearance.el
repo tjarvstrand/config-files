@@ -4,6 +4,10 @@
 (load-library "my-theme.el")
 (color-theme-my-theme)
 
+(require 'smart-mode-line)
+(setq sml/theme 'dark)
+(sml/setup)
+
 ;; Set font
 (defun set-font-size (size)
   (interactive "nSize: ")

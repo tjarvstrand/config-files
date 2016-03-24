@@ -46,6 +46,9 @@
  '(ahs-idle-interval 1)
  '(comment-multi-line t)
  '(create-lockfiles nil)
+ '(custom-safe-themes
+   (quote
+    ("b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(edts-inhibit-package-check t)
  '(edts-man-root "~/.emacs.d/edts/doc/R15B03")
@@ -122,6 +125,7 @@
 (load-library "my-erlang")
 (load-library "my-python")
 (load-library "my-ruby")
+(load-library "my-scala")
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))

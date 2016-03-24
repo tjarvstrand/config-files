@@ -44,7 +44,7 @@
 	  (ido-subdir ((t (:foreground "#CF6A4C"))))
 	  (left-margin ((t (nil))))
 	  (minibuffer-prompt ((t (:foreground "white") (:weight 'bold))))
-	  (mode-line ((t (:background "grey75" :foreground "black"))))
+	  ;; (mode-line ((t (:background "grey75" :foreground "black"))))
 	  (mumamo-background-chunk-submode ((t (:background "#222222"))))
 	  (text-cursor ((t (:background "yellow" :foreground "black"))))
 	  (toolbar ((t (nil))))
