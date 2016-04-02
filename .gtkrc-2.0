@@ -1,6 +1,5 @@
 # This is a comment
 gtk-theme-name="Vertex-Dark"
-gtk-icon-theme-name="vertex-icons"
 
 #### Firefox text fix goes inside the theme name/gtk-2.0/gtkrc (or an app
 #### fix in the gtk-2.0/styles) This should work with all problematic
