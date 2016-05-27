@@ -74,7 +74,7 @@ layouts = [
     libqtile.layout.xmonad.MonadTall(ratio = 0.66,
                                      border_width = 1,
                                      single_border_width = 0,
-                                        new_window_replaces_current = True),
+                                     new_window_replaces_current = True),
     layout.Max()
 ]
 

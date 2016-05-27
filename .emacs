@@ -1,3 +1,18 @@
+;; EQC Emacs Mode -- Configuration Start
+(add-to-list 'load-path "/home/tjarvstrand/.erlang.d/otp_r16b03-1_kred/lib/erlang/lib/eqc-1.32.2/emacs/")
+(autoload 'eqc-erlang-mode-hook "eqc-ext" "EQC Mode" t)
+(add-hook 'erlang-mode-hook 'eqc-erlang-mode-hook)
+(setq eqc-max-menu-length 30)
+(setq eqc-root-dir "/home/tjarvstrand/.erlang.d/otp_r16b03-1_kred/lib/erlang/lib/eqc-1.32.2")
+;; EQC Emacs Mode -- Configuration End
+
+;; Erlang Emacs Mode -- Configuration Start
+(setq erlang-root-dir "/home/tjarvstrand/.erlang.d/otp_r16b03-1_kred/lib/erlang")
+(setq load-path (cons "/home/tjarvstrand/.erlang.d/otp_r16b03-1_kred/lib/erlang/lib/tools-2.6.13/emacs" load-path))
+(setq exec-path (cons "/home/tjarvstrand/.erlang.d/otp_r16b03-1_kred/lib/erlang/bin" exec-path))
+(require 'erlang-start)
+;; Erlang Emacs Mode -- Configuration End
+
 
 (let ((lib-dir (concat user-emacs-directory "/lib")))
   (add-to-list 'load-path lib-dir)
