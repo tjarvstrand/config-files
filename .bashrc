@@ -113,16 +113,25 @@ else
     /usr/bin/ssh-add
 fi
 
+    # Does `.gpg-agent-info' exist and points to a gpg-agent process accepting signals?
+if [ -f $HOME/.gpg-agent-info ] && \
+    kill -0 $(cut -d: -f 2 $HOME/.gpg-agent-info) 2>/dev/null
+then
+    # Yes, `.gpg-agent.info' points to valid gpg-agent process;
+        # Indicate gpg-agent process
+    GPG_AGENT_INFO=$(cat $HOME/.gpg-agent-info | cut -c 16-)
+else
+    # No, no valid gpg-agent process available;
+        # Start gpg-agent
+    eval $(gpg-agent --daemon --no-grab --write-env-file $HOME/.gpg-agent-info)
+fi
+export GPG_TTY=$(tty)
+export GPG_AGENT_INFO
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
 
 fi
 
@@ -130,20 +139,9 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias ag='ack-grep'
-alias age='ack-grep --erlang'
-alias kred='bin/kred -i -no_cron'
 alias gt='source gt'
-alias rebuild='make -j 12 myday && bin/kred -n master && bin/kred -i'
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
+alias grep='grep --color=auto'
 
 
 # enable programmable completion features (you don't need to enable
@@ -177,7 +175,7 @@ if [[ -z ${ORIG_MANPATH} ]]; then
 fi
 export MANPATH=${ORIG_MANPATH}
 
-export OTP_PATH="${HOME}/erlang.d/install/current"
+export OTP_PATH="${HOME}/.erlang.d/current"
 export PATH="${OTP_PATH}/bin:${PATH}"
 export DIALYZER_PLT="${OTP_PATH}/dialyzer.plt"
 
@@ -243,31 +241,38 @@ function cd {
 }
 cd $PWD
 
-# export AWS_ENV=${HOME}/.aws/adfs-env
-# function aws-with-adfs {
-#     source ${AWS_ENV} 2>/dev/null
-#     EXPIRY=$(((${AWS_SESSION_EXPIRATION_TIME} - $(date -u +%s)) / 60))
-#     if [ ${EXPIRY} -le 0 ]; then
-#         RES=$($(which aws-adfs-login))
-#         RET=${?}
-#         if [[ "${RET}" == "0" ]]; then
-#             eval $(echo ${RES} | tee ${AWS_ENV})
-#         else
-#             echo ${RES}
-#             return ${RET}
-#         fi
-#     fi
-#     EXPIRY=$(((${AWS_SESSION_EXPIRATION_TIME} - $(date -u +%s)) / 60))
-#     echo "Session expires in ${EXPIRY} minutes"
-#     if [ $# -ne 0 ]; then
-#         $(which aws) ${@}
-#     fi
-# }
+function aws-with-adfs-login {
+    RES=$($(which aws-adfs-tool) login -r ${AWS_ADFS_ROLE} -a ${AWS_ADFS_ACCOUNT})
+    RET=${?}
+    if [[ "${RET}" == "0" ]]; then
+        eval $(echo ${RES} | tee ${AWS_ENV})
+    else
+        echo ${RES}
+        return ${RET}
+    fi
+}
 
-# alias aws='aws-with-adfs'
-# export AD_USERNAME=thomas.jarvstrand
-#export AWS_DEFAULT_PROFILE=Klarna_ADFS_admin@eu-non-production-klarna
-export AWS_DEFAULT_PROFILE=kasper-non-prod
+export AWS_ENV=${HOME}/.aws/adfs-env
+function aws-with-adfs {
+    source ${AWS_ENV} 2>/dev/null
+    EXPIRY=$(((${AWS_SESSION_EXPIRATION_TIME} - $(date -u +%s)) / 60))
+    if [ ${EXPIRY} -le 0 ]; then
+        aws-with-adfs-login
+    fi
+    EXPIRY=$(((${AWS_SESSION_EXPIRATION_TIME} - $(date -u +%s)) / 60))
+    if [ $# -ne 0 ]; then
+        $(which aws) ${@}
+    fi
+    >&2 echo "ADFS Session expires in ${EXPIRY} minutes"
+}
+
+alias aws='aws-with-adfs'
+export AD_USERNAME=thomas.jarvstrand
+export AWS_ADFS_ROLE=Klarna_ADFS_burrus
+export AWS_ADFS_ACCOUNT=${AWS_ADFS_ACCOUNT:-klarna-non-production}
+export AWS_DEFAULT_PROFILE=${AWS_ADFS_ROLE}@${AWS_ADFS_ACCOUNT}
+# export AWS_ACCESS_KEY_ID=AKIAIPU5LNWKTVYPWZ7A
+# export AWS_SECRET_ACCESS_KEY=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
 
 function pr {
     stash pr create ${1:-${burrus}} ${@:2}
@@ -276,7 +281,6 @@ function pr {
 function otp {
     if [[ ! $1 ]]; then
         CURRENT=$(readlink "${HOME}/.erlang.d/current" | sed s:.*/::)
-        echo "${CURRENT}"
         OTP_VERSIONS=($(find ${HOME}/.erlang.d -maxdepth 1 -mindepth 1 -type d -printf %f\\n))
         COUNT=${#OTP_VERSIONS[@]}
         for i in $(seq 0 $((${COUNT} -1))); do
@@ -315,4 +319,6 @@ export PATH="${PATH}:${HOME}/klarna/chef/naked-chef"
 export KRED_POLL=true
 export IGNORE_FORCE_BACKUP=true
 export KRED_SKIP_SUBMODULE_UPDATE=true
+
+export DEV_REPOS=all
 

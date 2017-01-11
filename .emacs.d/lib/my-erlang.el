@@ -11,12 +11,14 @@
 ;; Indentation
 (add-to-list 'safe-local-variable-values '(erlang-indent-level . 2))
 
+(setq edts-erl-flags "-edts foo bar -edts baz bam")
+(setq edts-code-issue-wrap-around t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; EDTS
 (add-to-list 'load-path "~/src/edts")
 (defun my-after-init-erlang-hook ()
   (require 'edts-start))
-(require 'edts-start)
 (add-hook 'after-init-hook 'my-after-init-erlang-hook)
 
 ;; (edts-log-set-level 'debug)

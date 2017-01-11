@@ -73,4 +73,3 @@
 (setq whitespace-display-mappings '((tab-mark 9 [9655 9] [92 9])))
 
 (scroll-bar-mode -1)
-(setq-default truncate-lines t)
