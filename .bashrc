@@ -271,8 +271,6 @@ export AD_USERNAME=thomas.jarvstrand
 export AWS_ADFS_ROLE=Klarna_ADFS_burrus
 export AWS_ADFS_ACCOUNT=${AWS_ADFS_ACCOUNT:-klarna-non-production}
 export AWS_DEFAULT_PROFILE=${AWS_ADFS_ROLE}@${AWS_ADFS_ACCOUNT}
-# export AWS_ACCESS_KEY_ID=AKIAIPU5LNWKTVYPWZ7A
-# export AWS_SECRET_ACCESS_KEY=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
 
 function pr {
     stash pr create ${1:-${burrus}} ${@:2}
