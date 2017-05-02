@@ -19,10 +19,9 @@
 [core]
   # global per user gitignore file
   excludesfile = "~/.gitignore"
+  pager = "less -F -X"
 [status]
   [submodule]
     summary = 0
 [branch]
   autosetupmerge = true
-[gitreview]
-	username = tjarvstrand

@@ -9,7 +9,7 @@ deactivate 2>/dev/null
 export LC_TYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-export EDITOR="emacs -Q -nw"
+export EDITOR="emacs --no-splash -nw"
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -28,6 +28,16 @@ HISTFILESIZE=2000
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
+
+HISTFILE_DIR=${HOME}/.bash_history.d
+HISTFILE=${HISTFILE_DIR}/${BASHPID}
+function update_hist() {
+    history -a ${HISTFILE}.local
+    history -r ${HISTFILE_DIR}/common
+    
+    cat $(find ${HISTFILE_DIR} -name '*.local') | awk '!a[$0]++' > ${HISTFILE_DIR}/common
+    cat ${HISTFILE}.local ${HISTFILE_DIR}/common | awk '!a[$0]++' > ${HISTFILE}
+}
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -85,10 +95,7 @@ xterm*|rxvt*)
     ;;
 esac
 
-
-
 SSH_ENV="$HOME/.ssh/environment"
-
 function start_agent {
     echo "Initialising new SSH agent..."
     /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
@@ -113,20 +120,24 @@ else
     /usr/bin/ssh-add
 fi
 
+function ensure_gpg_agent_started {
     # Does `.gpg-agent-info' exist and points to a gpg-agent process accepting signals?
-if [ -f $HOME/.gpg-agent-info ] && \
-    kill -0 $(cut -d: -f 2 $HOME/.gpg-agent-info) 2>/dev/null
-then
-    # Yes, `.gpg-agent.info' points to valid gpg-agent process;
+    if [ -f $HOME/.gpg-agent-info ] && \
+           kill -0 $(cut -d: -f 2 $HOME/.gpg-agent-info) 2>/dev/null
+    then
+        # Yes, `.gpg-agent.info' points to valid gpg-agent process;
         # Indicate gpg-agent process
-    GPG_AGENT_INFO=$(cat $HOME/.gpg-agent-info | cut -c 16-)
-else
-    # No, no valid gpg-agent process available;
+        source $HOME/.gpg-agent-info
+    else
+        # No, no valid gpg-agent process available;
         # Start gpg-agent
-    eval $(gpg-agent --daemon --no-grab --write-env-file $HOME/.gpg-agent-info)
-fi
-export GPG_TTY=$(tty)
-export GPG_AGENT_INFO
+        eval $(gpg-agent --daemon --no-grab --write-env-file $HOME/.gpg-agent-info)
+    fi
+    export GPG_TTY=$(tty)
+    export GPG_AGENT_INFO
+}
+ensure_gpg_agent_started
+
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -142,6 +153,11 @@ alias l='ls -CF'
 alias gt='source gt'
 
 alias grep='grep --color=auto'
+
+function g () {
+    find . -name "*.erl" -exec grep -rnH $@ {} \;
+}
+
 
 
 # enable programmable completion features (you don't need to enable
@@ -220,8 +236,7 @@ export burrus="fredrik.lindberg jimmy.zoger eduard.zamora"
 export fred="vadym.khatsanovskyy samuel.strand enrique.fernandez nuno.marques andre.goncalves howard.beard-marlowe"
 GIT_AUTHOR_NAME="Thomas Järvstrand"
 GIT_COMMITTER_NAME="Thomas Järvstrand"
-function cd {
-  builtin cd "${@:1}"
+function cd_git {
   GIT_COMMITTER_EMAIL_ORIG=${GIT_COMMITTER_EMAIL}
   GIT_AUTHOR_EMAIL_ORIG=${GIT_AUTHOR_EMAIL}
   if [[ -n "${PWD}" ]]; then
@@ -239,9 +254,47 @@ function cd {
     fi
   fi
 }
+
+function cd_otp {
+  PATH_NO_OTP=$(echo $PATH |
+                sed "s:${HOME}/.erlang.d/[^:]*::g" |
+                tr -s ":")
+  if [[ -n "${PWD}" ]]; then
+    if [[ "$(readlink -f ${PWD})" == *"$HOME/klarna/fred"* ]]; then
+        OTP_NEW="otp_17.5.6_kred"
+    else
+        if [[ "$(readlink -f ${PWD})" == *"$HOME/klarna/kred"* ]]; then
+             OTP_NEW="18.3.4.5+kred1"
+        else
+        OTP_NEW="current"
+        fi
+    fi
+    OTP_PATH_NEW="${HOME}/.erlang.d/${OTP_NEW}"
+    if [[ "${OTP_NEW}" == "current" ]]
+    then
+        OTP_NAME=$(readlink ${OTP_PATH_NEW} | sed -r "s:.*/(.*)$:\1:")
+        echo "OTP build: ${OTP_NAME} (current)"
+    else
+        echo "OTP build: ${OTP_NEW}"
+    fi
+    export PATH="${OTP_PATH_NEW}/bin:${PATH_NO_OTP}"
+    # if [[ "${OTP_NEW}" != "${GIT_AUTHOR_EMAIL}" ]]; then
+    #     export GIT_COMMITTER_EMAIL=${GIT_COMMITTER_EMAIL_NEW}
+    #     export GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL_NEW}
+    #     echo git email: ${GIT_AUTHOR_EMAIL_NEW}
+    # fi
+  fi
+}
+
+function cd {
+  builtin cd "${@:1}"
+  cd_git
+  cd_otp
+}
 cd $PWD
 
-function aws-with-adfs-login {
+function aws-with-adfs-login
+ {
     RES=$($(which aws-adfs-tool) login -r ${AWS_ADFS_ROLE} -a ${AWS_ADFS_ACCOUNT})
     RET=${?}
     if [[ "${RET}" == "0" ]]; then
@@ -320,3 +373,26 @@ export KRED_SKIP_SUBMODULE_UPDATE=true
 
 export DEV_REPOS=all
 
+function tmux-session {
+    if ! pidof tmux > /dev/null
+    then
+        exec tmux
+    fi
+    TMUX_SESSIONS=$(tmux list-sessions)
+    TMUX_SESSION_COUNT=${#TMUX_SESSIONS[@]}
+    echo default $DEFAULT_TMUX_SESSION
+    for i in $(seq 0 $((${TMUX_SESSION_COUNT} -1))); do
+        echo -e "${TMUX_SESSIONS[${i}]}"
+    done
+    read -p "Choose session [New]: " TMUX_SESSION
+    if [[ -z "${TMUX_SESSION}" ]]; then
+        exec tmux
+    fi
+    tmux attach -t ${TMUX_SESSION}
+
+}
+
+if [[ -z "${TMUX}" ]]
+then
+    tmux-session
+fi

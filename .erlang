@@ -3,4 +3,10 @@ case code:where_is_file("redbug.beam") of
      non_existing -> code:add_path(Home ++ "/src/eper/ebin");
      _            -> ok
 end.
-c:c(Home ++ "/config-files/user_default.erl", [{outdir, Home ++ "/config-files"}]).
+case c:l(user_default) of
+  {module, user_default} ->
+    ok;
+  {error, _} ->
+    Path = Home ++ "/config-files/user_default.erl",
+    c:c(Path, [{outdir, Home ++ "/config-files"}])
+end.

@@ -9,3 +9,9 @@ Host 10.225.* 10.226.* 10.235.16.* 10.235.8.* *.esup.cloud.internal.machines
 
 Host *.internal.machines
      User thomas.jarvstrand
+
+Host wrt 192.168.1.1
+     HostName 192.168.1.1
+     User tjarvstrand
+     ServerAliveInterval 10
+

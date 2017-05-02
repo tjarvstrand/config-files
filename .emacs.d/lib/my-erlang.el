@@ -7,6 +7,18 @@
 ;; (require 'erl)
 (add-to-list 'exec-path "/home/tjarvstrand/.erlang.d/current/bin")
 
+
+;; Workaround for eqc-mode setting debug-on-error to t
+(add-hook 'erlang-mode-hook (lambda () (setq debug-on-error)))
+
+;; Erlang Emacs Mode -- Configuration Start
+(setq erlang-root-dir "/home/tjarvstrand/.erlang.d/otp_17.5.6_kred/lib/erlang")
+(setq load-path (cons "/home/tjarvstrand/.erlang.d/otp_17.5.6_kred/lib/erlang/lib/tools-2.6.13/emacs" load-path))
+(setq exec-path (cons "/home/tjarvstrand/.erlang.d/otp_17.5.6_kred/lib/erlang/bin" exec-path))
+(require 'erlang-start)
+;; Erlang Emacs Mode -- Configuration End
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Indentation
 (add-to-list 'safe-local-variable-values '(erlang-indent-level . 2))
@@ -17,6 +29,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; EDTS
 (add-to-list 'load-path "~/src/edts")
+(add-to-list 'load-path "~/src/edts/elisp/edts")
 (defun my-after-init-erlang-hook ()
   (require 'edts-start))
 (add-hook 'after-init-hook 'my-after-init-erlang-hook)

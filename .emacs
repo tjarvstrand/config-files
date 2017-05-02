@@ -1,17 +1,3 @@
-;; EQC Emacs Mode -- Configuration Start
-(add-to-list 'load-path "/home/tjarvstrand/.erlang.d/otp_r16b03-1_kred/lib/erlang/lib/eqc-1.32.2/emacs/")
-(autoload 'eqc-erlang-mode-hook "eqc-ext" "EQC Mode" t)
-(add-hook 'erlang-mode-hook 'eqc-erlang-mode-hook)
-(setq eqc-max-menu-length 30)
-(setq eqc-root-dir "/home/tjarvstrand/.erlang.d/otp_r16b03-1_kred/lib/erlang/lib/eqc-1.32.2")
-;; EQC Emacs Mode -- Configuration End
-
-;; Erlang Emacs Mode -- Configuration Start
-(setq erlang-root-dir "/home/tjarvstrand/.erlang.d/otp_r16b03-1_kred/lib/erlang")
-(setq load-path (cons "/home/tjarvstrand/.erlang.d/otp_r16b03-1_kred/lib/erlang/lib/tools-2.6.13/emacs" load-path))
-(setq exec-path (cons "/home/tjarvstrand/.erlang.d/otp_r16b03-1_kred/lib/erlang/bin" exec-path))
-(require 'erlang-start)
-;; Erlang Emacs Mode -- Configuration End
 
 
 (let ((lib-dir (concat user-emacs-directory "/lib")))
@@ -25,10 +11,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ELPA
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
-                         ;; ("melpa-stable" . "http://stable.melpa.org/packages/")
+                         ("melpa-stable" . "http://stable.melpa.org/packages/")
                          ))
 (unless (file-directory-p "~/.emacs.d/elpa")
     (make-directory "~/.emacs.d/elpa"))
@@ -42,10 +29,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Misc
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (load-library "my-misc")
 (load-library "misc-cmds")
 (load-library "show-point-mode")
-;(load-library "mismatched-parens")
+;; (load-library "mismatched-parens")
 
 (toggle-buffer-tail "*Messages*" "on")
 
@@ -64,6 +52,7 @@
  '(custom-safe-themes
    (quote
     ("b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
+ '(debug-on-error nil)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(edts-inhibit-package-check t)
  '(edts-man-root "~/.emacs.d/edts/doc/R15B03")
@@ -82,7 +71,6 @@
      (allout-layout . t))))
  '(vc-follow-symlinks t))
 
-(getenv "EMAIL")
 (setq x-select-enable-clipboard 1)
 (setq-default indent-tabs-mode nil)
 
@@ -123,6 +111,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; Display ido results vertically, rather than horizontally
 (setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
 
@@ -148,22 +137,11 @@
           (lambda ()
             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Flymake
-;(require 'flymake-conf)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-(put 'narrow-to-region 'disabled nil)
-
 (setq ac-auto-show-menu t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VC Git
+
 (defadvice vc-git-working-revision (around vc-git-working-revision-detached activate)
   "Get the git working revision when detached"
   ad-do-it
@@ -182,5 +160,12 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Comint
+
 (setq comint-buffer-maximum-size 15000)
 (add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Kred
+
+(setq edts-project-overrides
+      '(("/home/tjarvstrand/klarna/kred" . (:otp-path "/home/tjarvstrand/.erlang.d/otp_17.5.6_kred"))))
