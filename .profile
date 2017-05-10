@@ -9,7 +9,7 @@
 #umask 022
 
 export EMAIL="tjarvstrand@gmail.com"
-export KLARNA_EMAIL="thomas.jarvstrand@klarna.com"
+export SCHIBSTED_EMAIL="thomas.jarvstrand@schibsted.com"
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists

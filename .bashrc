@@ -120,25 +120,6 @@ else
     /usr/bin/ssh-add
 fi
 
-function ensure_gpg_agent_started {
-    # Does `.gpg-agent-info' exist and points to a gpg-agent process accepting signals?
-    if [ -f $HOME/.gpg-agent-info ] && \
-           kill -0 $(cut -d: -f 2 $HOME/.gpg-agent-info) 2>/dev/null
-    then
-        # Yes, `.gpg-agent.info' points to valid gpg-agent process;
-        # Indicate gpg-agent process
-        source $HOME/.gpg-agent-info
-    else
-        # No, no valid gpg-agent process available;
-        # Start gpg-agent
-        eval $(gpg-agent --daemon --no-grab --write-env-file $HOME/.gpg-agent-info)
-    fi
-    export GPG_TTY=$(tty)
-    export GPG_AGENT_INFO
-}
-ensure_gpg_agent_started
-
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -206,10 +187,6 @@ export GOROOT="${HOME}/src/golang/go"
 export GOPATH="${HOME}/src/golang/packages"
 export PATH="${GOROOT}/bin:${GOPATH}/bin:${PATH}"
 
-# Stash CLI
-export STASH_USER=thomas.jarvstrand
-export PATH="${HOME}/src/stash-cli:${HOME}/klarna/stash:${PATH}"
-
 # Ansible ----------------------------------------------------------------------
 export ANSIBLE_HOME=${HOME}/src/ansible
 export PATH=${ANSIBLE_HOME}/bin:${PATH}
@@ -220,6 +197,11 @@ export PYTHONPATH=${ANSIBLE_HOME}/lib:${PYTHONPATH}
 export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:bin/javac::")
 export PATH=${PATH}:${JAVA_HOME}/bin
 
+# Java -------------------------------------------------------------------------
+SCALA_VERSION=2.11.11
+export SCALA_HOME=/usr/local/lib/scala/${SCALA_VERSION}
+export PATH=${PATH}:${SCALA_HOME}/bin
+
 
 # Riak -------------------------------------------------------------------------
 ulimit -n 65536
@@ -227,22 +209,16 @@ ulimit -n 65536
 # # Python -----------------------------------------------------------------------
 . ${HOME}/.virtualenv/bin/activate
 
-# Klarna -----------------------------------------------------------------------
-export ERL_LIBS=${HOME}/klarna/quickcheck
-export KRED_SKIP_SUBMODULE_UPDATE=TRUE
-export esup=esup.cloud.internal.machines
-export esup_oncall="lars.sjostrom johan.wiren martin.wilhelm mats.westin sandor.bodor jefferson.girao"
-export burrus="fredrik.lindberg jimmy.zoger eduard.zamora"
-export fred="vadym.khatsanovskyy samuel.strand enrique.fernandez nuno.marques andre.goncalves howard.beard-marlowe"
+# Git -----------------------------------------------------------------------
 GIT_AUTHOR_NAME="Thomas Järvstrand"
 GIT_COMMITTER_NAME="Thomas Järvstrand"
 function cd_git {
   GIT_COMMITTER_EMAIL_ORIG=${GIT_COMMITTER_EMAIL}
   GIT_AUTHOR_EMAIL_ORIG=${GIT_AUTHOR_EMAIL}
   if [[ -n "${PWD}" ]]; then
-    if [[ "$(readlink -f ${PWD})" == *"$HOME/klarna"* ]]; then
-        GIT_COMMITTER_EMAIL_NEW=${KLARNA_EMAIL}
-        GIT_AUTHOR_EMAIL_NEW=${KLARNA_EMAIL}
+    if [[ "$(readlink -f ${PWD})" == *"$HOME/schibsted"* ]]; then
+        GIT_COMMITTER_EMAIL_NEW=${SCHIBSTED_EMAIL}
+        GIT_AUTHOR_EMAIL_NEW=${SCHIBSTED_EMAIL}
     else
         GIT_COMMITTER_EMAIL_NEW=${EMAIL}
         GIT_AUTHOR_EMAIL_NEW=${EMAIL}
@@ -289,7 +265,7 @@ function cd_otp {
 function cd {
   builtin cd "${@:1}"
   cd_git
-  cd_otp
+  #cd_otp
 }
 cd $PWD
 
@@ -354,24 +330,6 @@ function otp {
         fi
     fi
 }
-
-alias pulp-admin='docker run --net=host -it --rm -v ${HOME}/.pulp:/root/.pulp -v ${PWD}:/tmp/uploads klarna/pulp-admin'
-
-
-# Paths
-export PATH="${PATH}:${HOME}/klarna/fred/fred_platform/bin:~/klarna/fred/gitrdun/bin"
-export PATH="${PATH}:${HOME}/klarna/chef/berksenv"
-export PATH="${PATH}:${HOME}/klarna/cloud/orchid/bin"
-# Demo remove me!
-export PATH="${PATH}:${HOME}/klarna/chef/naked-chef"
-
-# Env
-# Make sure to use kernel_poll
-export KRED_POLL=true
-export IGNORE_FORCE_BACKUP=true
-export KRED_SKIP_SUBMODULE_UPDATE=true
-
-export DEV_REPOS=all
 
 function tmux-session {
     if ! pidof tmux > /dev/null

@@ -19,16 +19,14 @@
                          ))
 (unless (file-directory-p "~/.emacs.d/elpa")
     (make-directory "~/.emacs.d/elpa"))
-(if (< emacs-major-version 24)
-  (dolist (file (directory-files "~/.emacs.d/elpa" t "^[^.]"))
-    (when (file-directory-p file)
-      (add-to-list 'load-path file)))
-  (require 'package)
-  (package-initialize))
+(require 'package)
+(setq package-enable-at-startup nil)
+(package-initialize)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;
 ;; Misc
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (load-library "my-misc")
 (load-library "misc-cmds")
@@ -62,6 +60,9 @@
  '(inhibit-startup-screen t)
  '(js-indent-level 2)
  '(message-log-max 10000)
+ '(package-selected-packages
+   (quote
+    (auto-highlight-symbol yaml-mode python-mode f erlang ensime color-theme)))
  '(safe-local-variable-values
    (quote
     ((py-smart-indentation)
@@ -83,7 +84,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Appearance
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load-library "fullscreen")
 (load-library "my-appearance")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -169,3 +169,9 @@
 
 (setq edts-project-overrides
       '(("/home/tjarvstrand/klarna/kred" . (:otp-path "/home/tjarvstrand/.erlang.d/otp_17.5.6_kred"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

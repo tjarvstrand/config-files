@@ -56,5 +56,6 @@ main = xmonad $ xfceConfig
   }
   `additionalKeysP`
     [ ("M1-<Tab>",  windows W.focusDown)
-    -- , ("C-<Return>", spawn "gnome-do")
+    , ("M-w",  kill)
+    , ("C-<Return>", spawn "dmenu_run_history -i -l 5")
     ]

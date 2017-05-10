@@ -1,12 +1,6 @@
 ;; color-theme
-(add-to-list 'load-path "~/elisp/themes")
-(require 'color-theme)
 (load-library "my-theme.el")
 (color-theme-my-theme)
-
-(require 'smart-mode-line)
-(setq sml/theme 'dark)
-(sml/setup)
 
 ;; Set font
 (defun set-font-size (size)
@@ -19,27 +13,7 @@
 
 (global-font-lock-mode t)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Window configuration
-;; (defvar th-frame-config-register
-;;   "The register which is used for storing and restoring frame
-;; configurations by `th-save-frame-configuration' and
-;; `th-jump-to-register'.")
-
-;; (defun th-save-frame-configuration ()
-;;   "Stores the current frame configuration in register
-;; `th-frame-config-register'. If a prefix argument is given, you
-;; can choose which register to use."
-;;   (frame-configuration-to-register th-frame-config-register))
-
-;; Set fullscreen
-;; (when x-session-id
-;;   (require 'fullscreen)
-;;   (setq default-frame-alist
-;;         '((top . 10) (left . 2)))
-;;   (fullscreen))
-
-(run-with-timer 0.2 nil #'(lambda () (split-windows-to-size 80)))
+;; (run-with-timer 0.2 nil #'(lambda () (split-windows-to-size 80)))
 
 ;; Line numbers on
 (global-linum-mode 1)
