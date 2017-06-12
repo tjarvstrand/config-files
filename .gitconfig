@@ -25,3 +25,5 @@
     summary = 0
 [branch]
   autosetupmerge = true
+[url "git@github.schibsted.io:"]
+	insteadOf = sch:
