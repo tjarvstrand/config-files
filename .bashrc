@@ -22,22 +22,43 @@ HISTCONTROL=ignoredups:ignorespace
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=10000
+HISTFILESIZE=10000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-HISTFILE_DIR=${HOME}/.bash_history.d
+HISTFILE_DIR=${HOME}/.bash_hist
+mkdir -p ${HISTFILE_DIR}
 HISTFILE=${HISTFILE_DIR}/${BASHPID}
+GLOBAL_HISTFILE=${HISTFILE_DIR}/global
 function update_hist() {
-    history -a ${HISTFILE}.local
-    history -r ${HISTFILE_DIR}/common
-    
-    cat $(find ${HISTFILE_DIR} -name '*.local') | awk '!a[$0]++' > ${HISTFILE_DIR}/common
-    cat ${HISTFILE}.local ${HISTFILE_DIR}/common | awk '!a[$0]++' > ${HISTFILE}
+    cmd="$(history | tail -n 1 | sed 's/[ 0-9]*//')"
+    awk='$0 != cmd {print $0} END {print cmd}'
+
+    touch ${HISTFILE}
+    awk -v cmd="${cmd}" "${awk}" ${HISTFILE} > ${HISTFILE}.tmp
+    mv ${HISTFILE}.tmp ${HISTFILE}
+
+    touch ${GLOBAL_HISTFILE}
+    awk -v cmd="${cmd}" "${awk}" ${GLOBAL_HISTFILE} > ${GLOBAL_HISTFILE}.tmp
+    mv ${GLOBAL_HISTFILE}.tmp ${GLOBAL_HISTFILE}
+
+    # Local history will be present in both local and global history, but local
+    # history will be first so that's ok for now.
+    history -c
+    history -r ${GLOBAL_HISTFILE}
+    history -r ${HISTFILE}
 }
+
+for f in $(find ${HISTFILE_DIR} -name '[0-9]*');
+do
+    (ps aux | grep bash | grep $(basename $f) > /dev/null) || rm -v ${f}
+done
+history -c
+history -r ${GLOBAL_HISTFILE}
+history -r ${HISTFILE}
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -88,7 +109,8 @@ set_prompt () {
 }
 
 # If this is an xterm set the title to user@host:dir
-PROMPT_COMMAND='set_prompt'
+PROMPT_COMMAND='set_prompt;update_hist'
+#PROMPT_COMMAND='set_prompt'
 case "$TERM" in
 xterm*|rxvt*)
     PROMPT_COMMAND=$PROMPT_COMMAND'; echo -ne "\033]0;${USER}@${HOSTNAME}\007"'
@@ -295,11 +317,11 @@ function aws-with-adfs {
     >&2 echo "ADFS Session expires in ${EXPIRY} minutes"
 }
 
-alias aws='aws-with-adfs'
-export AD_USERNAME=thomas.jarvstrand
-export AWS_ADFS_ROLE=Klarna_ADFS_burrus
-export AWS_ADFS_ACCOUNT=${AWS_ADFS_ACCOUNT:-klarna-non-production}
-export AWS_DEFAULT_PROFILE=${AWS_ADFS_ROLE}@${AWS_ADFS_ACCOUNT}
+export AD_USERNAME=thojar
+#alias aws='aws-with-adfs'
+# export AWS_ADFS_ROLE=Klarna_ADFS_burrus
+# export AWS_ADFS_ACCOUNT=${AWS_ADFS_ACCOUNT:-klarna-non-production}
+# export AWS_DEFAULT_PROFILE=${AWS_ADFS_ROLE}@${AWS_ADFS_ACCOUNT}
 
 function pr {
     stash pr create ${1:-${burrus}} ${@:2}

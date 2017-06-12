@@ -1,4 +1,4 @@
-
+(setq inhibit-x-resources t)
 
 (let ((lib-dir (concat user-emacs-directory "/lib")))
   (add-to-list 'load-path lib-dir)
