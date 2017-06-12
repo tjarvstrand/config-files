@@ -23,6 +23,26 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
+; list the packages you want
+(setq package-list '(auto-highlight-symbol
+                     color-theme
+                     company
+                     dash
+                     ensime
+                     erlang
+                     f
+                     popup
+                     python-mode
+                     s
+                     sbt-mode
+                     scala-mode
+                     yaml-mode
+                     yasnippet))
+
+; install the missing packages
+(dolist (package package-list)
+  (package-install package t))
+
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Misc
