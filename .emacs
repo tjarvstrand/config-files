@@ -82,7 +82,7 @@
  '(message-log-max 10000)
  '(package-selected-packages
    (quote
-    (auto-highlight-symbol yaml-mode python-mode f erlang ensime color-theme)))
+    (auto-complete "s" "s" nil auto-highlight-symbol yaml-mode python-mode f erlang ensime color-theme)))
  '(safe-local-variable-values
    (quote
     ((py-smart-indentation)
