@@ -126,47 +126,17 @@ function start_ssh_agent {
     . "${SSH_ENV}" > /dev/null
 }
 
-function ensure_ssh_agent_started {
-    if [ -f "${SSH_ENV}" ]; then
-        . "${SSH_ENV}" > /dev/null
-        ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-            start_agent;
-        }
-    else
-        start_ssh_agent;
-    fi
-}
-
-function ensure_ssh_key_added {
-    if ssh-add -l | cut -d ' ' -f 3 | grep ${HOME}/.ssh/id_rsa > /dev/null; then
-        echo id_rsa already added to agent
-    else
-       ssh-add
-    fi
-}
-
-# Source SSH settings, if applicable
-function ssh_wrapper {
-    ensure_ssh_agent_started
-    ensure_ssh_key_added
-    $(which ssh) $@
-}
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
 fi
 
-# some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias ssh='ssh_wrapper'
+alias ssh="${HOME}/bin/ssh_agent_wrapper;ssh"
 alias gw='./gradlew'
-
-
-alias grep='grep --color=auto'
 
 function g () {
     find . -name "*.erl" -exec grep -rnH $@ {} \;
@@ -383,7 +353,7 @@ function tmux-session {
 
 }
 
-if [[ -z "${TMUX}" ]]
+if which tmux > /dev/null && [[ -z "${TMUX}" ]]
 then
     tmux-session
 fi
