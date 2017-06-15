@@ -85,17 +85,18 @@ widget_defaults = dict(
     margin_x = 2
 )
 
+fontsize = 16
 screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.AGroupBox(margin_x = 2, padding_x = 8, border = '777777'),
-                widget.Sep(margin_x = 2, foreground = '555555'),
-                widget.WindowName(padding = 4, width = bar.CALCULATED),
+                widget.AGroupBox(margin_y = 4, margin_x = 1, padding_y = 2, padding_x = 1, fontsize = fontsize),
+                widget.Sep(margin_x = 1, foreground = '555555'),
+                widget.WindowName(padding = 4, width = bar.CALCULATED, fontsize = fontsize),
                 # widget.Sep(padding = 8, foreground = '555555'),
                 # widget.Prompt(prompt = "run: ", background = '000000'),
                 widget.Spacer(),
-                widget.KeyboardLayout(configured_keyboards = ["se", "custom"]),
+                widget.KeyboardLayout(configured_keyboards = ["se", "custom"], fontsize = fontsize),
                 widget.Sep(padding = 8, foreground = '555555'),
                 widget.CPUGraph(),
                 widget.CheckUpdates(distro = 'Ubuntu',
@@ -103,14 +104,15 @@ screens = [
                                     update_interval = 600,
                                     execute = 'terminator --command="sudo apt-get update && apt-upgrade && echo Upgrade done; read"',
                                     hide_on_no_updates = True,
-                                    update_after_execute = True
+                                    update_after_execute = True,
+                                    fontsize = fontsize
                                         ),
                 widget.Sep(padding = 8, foreground = '555555'),
                 widget.Systray(),
                 widget.Sep(padding = 8, foreground = '555555'),
-                widget.Clock(fontsize = 12, format='%b %d,%H:%M '),
+                widget.Clock(fontsize = fontsize -2, format='%b %d,%H:%M '),
             ],
-            20,
+            24,
             background = '111111'
         ),
     )
@@ -161,12 +163,13 @@ def ensure_running(proc_name, run_proc):
 startup_apps = [lambda: sh.wmname(wmname),
                 ensure_running("nm-applet", lambda: sh.nm_applet(_bg=True)),
                 # TODO Run these from the xsession or something
-                ensure_running("xfce4-volumed", lambda: sh.xfce4_volumed(_bg=True)),
+                # ensure_running("xfce4-volumed", lambda: sh.xfce4_volumed(_bg=True)),
                 ensure_running("xfce4-power-manager", lambda: sh.xfce4_power_manager(_bg=True)),
                 ensure_running("light-locker", lambda: sh.light_locker(_bg=True)),
                 lambda: sh.dropbox("start", _bg=True),
                 # TODO Remove the below
-                lambda: sh.setxkbmap("-layout", "custom", "-option", "caps:ctrl_modifier")]
+                #lambda: sh.setxkbmap("-layout", "custom", "-option", "caps:ctrl_modifier")
+]
 
 for start_app in startup_apps:
     start_app()
