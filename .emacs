@@ -23,30 +23,22 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
-; list the packages you want
-(setq package-list '(auto-highlight-symbol
-                     color-theme
-                     company
-                     dash
-                     ensime
-                     erlang
-                     f
-                     popup
-                     python-mode
-                     s
-                     sbt-mode
-                     scala-mode
-                     yaml-mode
-                     yasnippet))
-
-; install the missing packages
-(dolist (package package-list)
-  (package-install package t))
-
+(setq package-selected-packages
+   (quote
+    (auto-complete
+     auto-highlight-symbol
+     color-theme
+     dash
+     ensime
+     erlang
+     f
+     python-mode
+     s
+     yaml-mode)))
+(package-install-selected-packages)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Misc
-
 
 (load-library "my-misc")
 (load-library "misc-cmds")
@@ -80,9 +72,6 @@
  '(inhibit-startup-screen t)
  '(js-indent-level 2)
  '(message-log-max 10000)
- '(package-selected-packages
-   (quote
-    (auto-complete "s" "s" nil auto-highlight-symbol yaml-mode python-mode f erlang ensime color-theme)))
  '(safe-local-variable-values
    (quote
     ((py-smart-indentation)
