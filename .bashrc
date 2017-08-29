@@ -117,15 +117,6 @@ xterm*|rxvt*)
     ;;
 esac
 
-SSH_ENV="$HOME/.ssh/environment"
-function start_ssh_agent {
-    echo "Initialising new SSH agent..."
-    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-    echo succeeded
-    chmod 600 "${SSH_ENV}"
-    . "${SSH_ENV}" > /dev/null
-}
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -135,8 +126,11 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias ssh="${HOME}/bin/ssh_agent_wrapper;ssh"
+alias ssh="${HOME}/bin/ssh_agent_wrapper"
 alias gw='./gradlew'
+alias grep='grep --color=auto'
+
+export GIT_SSH_COMMAND="${HOME}/bin/ssh_agent_wrapper -q"
 
 function g () {
     find . -name "*.erl" -exec grep -rnH $@ {} \;
@@ -152,6 +146,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 export ERL_INETRC=${HOME}/.inetrc
+export SSH_ENV="$HOME/.ssh/environment"
 
 # Paths ------------------------------------------------------------------------
 
@@ -179,15 +174,12 @@ export OTP_PATH="${HOME}/.erlang.d/current"
 export PATH="${OTP_PATH}/bin:${PATH}"
 export DIALYZER_PLT="${OTP_PATH}/dialyzer.plt"
 
-# Chef
-#export PATH="/opt/chef/bin:/opt/chef/embedded/bin:${PATH}"
 # Misc paths
 export PATH="${PATH}:~/bin:~/scripts:${HOME}/.erlang.d/current/bin"
-#:${HOME}/src/rebar"
 
 # Go
-export GOROOT="${HOME}/src/golang/go"
-export GOPATH="${HOME}/src/golang/packages"
+export GOROOT="/usr/local/lib/go"
+export GOPATH="${HOME}/src/golang"
 export PATH="${GOROOT}/bin:${GOPATH}/bin:${PATH}"
 
 # Ansible ----------------------------------------------------------------------
@@ -202,7 +194,7 @@ export PATH=${PATH}:${JAVA_HOME}/bin
 
 # Java -------------------------------------------------------------------------
 SCALA_VERSION=2.11.11
-export SCALA_HOME=/usr/local/lib/scala/${SCALA_VERSION}
+export SCALA_HOME=/usr/local/lib/scala-${SCALA_VERSION}
 export PATH=${PATH}:${SCALA_HOME}/bin
 
 
@@ -298,6 +290,9 @@ function aws-with-adfs {
     >&2 echo "ADFS Session expires in ${EXPIRY} minutes"
 }
 
+export AWS_PROFILE=dev
+export AWS_DEFAULT_REGION=eu-west-1
+
 export AD_USERNAME=thojar
 #alias aws='aws-with-adfs'
 # export AWS_ADFS_ROLE=Klarna_ADFS_burrus
@@ -357,3 +352,6 @@ if which tmux > /dev/null && [[ -z "${TMUX}" ]]
 then
     tmux-session
 fi
+
+# added by travis gem
+[ -f /home/tjarvstrand/.travis/travis.sh ] && source /home/tjarvstrand/.travis/travis.sh

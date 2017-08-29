@@ -1,6 +1,6 @@
 Home = os:getenv("HOME").
 case code:where_is_file("redbug.beam") of
-     non_existing -> code:add_path(Home ++ "/src/eper/ebin");
+     non_existing -> code:add_path(Home ++ "/src/eper/_build/default/lib/eper/ebin");
      _            -> ok
 end.
 case c:l(user_default) of

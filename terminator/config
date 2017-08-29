@@ -8,6 +8,7 @@
   title_inactive_bg_color = "#3b3b3b"
   title_transmit_fg_color = "#000000"
 [keybindings]
+  layout_launcher = None
   switch_to_tab_1 = <Control>1
   switch_to_tab_2 = <Control>2
   switch_to_tab_3 = <Control>3
@@ -33,7 +34,7 @@
     audible_bell = True
     cursor_color = "#408e30"
     custom_command = tmux
-    font = Ubuntu Mono 10
+    font = Ubuntu Mono 7
     foreground_color = "#0acb00"
     icon_bell = False
     login_shell = True

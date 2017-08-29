@@ -7,13 +7,22 @@
   (interactive "nSize: ")
   (set-frame-font (format "Ubuntu Mono-%s" size)))
 
-(if (string= "brunsnultra" (system-name))
-    (set-font-size 10)
-  (set-font-size 9))
+(defun frame-monitor-pixel-density ()
+  (let* ((attrs  (frame-monitor-attributes))
+         (mm     (apply '* (cdr (assoc 'mm-size attrs))))
+         (pixels (apply '* (cdddr (assoc 'geometry attrs)))))
+    (/ pixels mm)))
+
+(defun auto-set-font-size ()
+  (interactive)
+  (if (> (frame-monitor-pixel-density) 50)
+      (set-font-size 8)
+    (set-font-size 7)))
+(auto-set-font-size)
 
 (global-font-lock-mode t)
 
-;; (run-with-timer 0.2 nil #'(lambda () (split-windows-to-size 80)))
+(run-with-timer 0.2 nil #'(lambda () (split-windows-to-size 80)))
 
 ;; Line numbers on
 (global-linum-mode 1)

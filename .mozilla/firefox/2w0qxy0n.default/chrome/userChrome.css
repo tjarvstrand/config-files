@@ -1,5 +1,8 @@
 /* global font */
 * {
-  font-size: 12pt !important;
-  font-family: Verdana !important;
+  font-size: 8pt !important;
+}
+
+.tabbrowser-tabs *|tab {
+   height: 26px !important
 }

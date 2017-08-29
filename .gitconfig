@@ -27,3 +27,5 @@
   autosetupmerge = true
 [url "git@github.schibsted.io:"]
 	insteadOf = sch:
+[hub]
+  host = "github.schibsted.io"

@@ -69,9 +69,15 @@
  '(electric-indent-mode nil)
  '(epushover-token "8voZIQ79jOdclr92TizvFcVr84gpnb")
  '(epushover-user-key "iExDziORD2VAffHJFa4nHh5BKlOYwZ")
+ '(ido-enable-tramp-completion nil)
+ '(ido-use-filename-at-point nil)
+ '(ido-use-url-at-point t)
  '(inhibit-startup-screen t)
  '(js-indent-level 2)
  '(message-log-max 10000)
+ '(package-selected-packages
+   (quote
+    (groovy-mode go-mode rust-mode auto-complete auto-highlight-symbol color-theme dash ensime erlang f python-mode s yaml-mode)))
  '(safe-local-variable-values
    (quote
     ((py-smart-indentation)
@@ -184,3 +190,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'erase-buffer 'disabled nil)

@@ -2,13 +2,21 @@ KeepAlive yes
 ServerAliveInterval 60
 ForwardAgent yes
 
-Host 10.225.* 10.226.* 10.235.16.* 10.235.8.* *.esup.cloud.internal.machines
-     User thomas.jarvstrand
-     StrictHostKeyChecking no
-     UserKnownHostsFile /dev/null
+Host dev
+     HostName bastion.id-dev.schibsted.io
+     User thojar
+     ServerAliveInterval 10
 
-Host *.internal.machines
-     User thomas.jarvstrand
+Host pre
+     HostName bastion.id-pre.schibsted.io
+     User thojar
+     ServerAliveInterval 10
+
+Host pro
+     HostName bastion.id-pro.schibsted.io
+     User thojar
+     ServerAliveInterval 10
+
 
 Host wrt 192.168.1.1
      HostName 192.168.1.1

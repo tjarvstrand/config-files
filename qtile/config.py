@@ -1,4 +1,4 @@
- # Copyright (c) 2010 Aldo Cortesi
+# Copyright (c) 2010 Aldo Cortesi
 # Copyright (c) 2010, 2014 dequis
 # Copyright (c) 2012 Randall Ma
 # Copyright (c) 2012-2014 Tycho Andersen
@@ -57,8 +57,16 @@ keys = [
     Key(["control", alt], "l", lazy.spawn("light-locker-command -l")),
     Key(["control"], "Return", lazy.spawn("dmenu_run_history -b -i")),
 
-    Key([], "XF86Display", lazy.spawn("scr auto")),
-    Key([], "XF86WLAN", lazy.spawn("toggle-wifi"))
+    Key([], "XF86Display", lazy.spawn("scr auto /home/tjarvstrand/scr.log")),
+    Key([], "XF86WLAN", lazy.spawn("toggle-wifi")),
+    Key([], "XF86AudioMute", lazy.spawn("/home/tjarvstrand/bin/toggle-mute")),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("/home/tjarvstrand/bin/volume dec 10")),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("/home/tjarvstrand/bin/volume inc 10")),
+    # Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 5")),
+    # Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 5")),
+    # Key(["control"], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 10")),
+    # Key(["control"], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 10"))
+
 ]
 
 groups = [Group(i) for i in "12345"]
@@ -92,10 +100,10 @@ screens = [
             [
                 widget.AGroupBox(margin_y = 4, margin_x = 1, padding_y = 2, padding_x = 1, fontsize = fontsize),
                 widget.Sep(margin_x = 1, foreground = '555555'),
-                widget.WindowName(padding = 4, width = bar.CALCULATED, fontsize = fontsize),
+                widget.WindowName(padding = 4, width = bar.STRETCH, fontsize = fontsize),
+                # widget.WindowName(padding = 4, width = 800, fontsize = fontsize),
                 # widget.Sep(padding = 8, foreground = '555555'),
                 # widget.Prompt(prompt = "run: ", background = '000000'),
-                widget.Spacer(),
                 widget.KeyboardLayout(configured_keyboards = ["se", "custom"], fontsize = fontsize),
                 widget.Sep(padding = 8, foreground = '555555'),
                 widget.CPUGraph(),
@@ -164,9 +172,10 @@ startup_apps = [lambda: sh.wmname(wmname),
                 ensure_running("nm-applet", lambda: sh.nm_applet(_bg=True)),
                 # TODO Run these from the xsession or something
                 # ensure_running("xfce4-volumed", lambda: sh.xfce4_volumed(_bg=True)),
+                ensure_running("blueman-applet", lambda: sh.blueman_applet(_bg=True)),
                 ensure_running("xfce4-power-manager", lambda: sh.xfce4_power_manager(_bg=True)),
                 ensure_running("light-locker", lambda: sh.light_locker(_bg=True)),
-                lambda: sh.dropbox("start", _bg=True),
+                lambda: sh.dropbox("start", "-i", _bg=True),
                 # TODO Remove the below
                 #lambda: sh.setxkbmap("-layout", "custom", "-option", "caps:ctrl_modifier")
 ]
