@@ -15,9 +15,12 @@
 
 (defun auto-set-font-size ()
   (interactive)
-  (if (> (frame-monitor-pixel-density) 50)
-      (set-font-size 8)
-    (set-font-size 7)))
+  (condition-case nil
+      (if (> (frame-monitor-pixel-density) 50)
+          (set-font-size 8)
+        (set-font-size 7))
+    (error nil)))
+
 (auto-set-font-size)
 
 (global-font-lock-mode t)

@@ -30,7 +30,7 @@
 		(border-color . "black")
 		(cursor-color . "#A7A7A7")
 		(foreground-color . "#F8F8F8")
-		(mouse-color . "sienna1"))
+		(mouse-color . "white"))
 	  (default ((t (:background "#141414" :foreground "#CACACA"))))
 	  (blue ((t (:foreground "blue"))))
 	  (border-glyph ((t (nil))))

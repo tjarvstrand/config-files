@@ -32,7 +32,7 @@
            (border-color . "black")
            (cursor-color . "#E5D759")
            (foreground-color . "#E6E1DC")
-           (mouse-color . "sienna1"))
+           (mouse-color . "white"))
 
 	  (blue ((t (:foreground "blue"))))
 	  (border-glyph ((t (nil))))
