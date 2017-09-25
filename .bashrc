@@ -34,7 +34,7 @@ mkdir -p ${HISTFILE_DIR}
 HISTFILE=${HISTFILE_DIR}/${BASHPID}
 GLOBAL_HISTFILE=${HISTFILE_DIR}/global
 function update_hist() {
-    cmd="$(history | tail -n 1 | sed 's/[ 0-9]*//')"
+    cmd="$(history | tail -n 1 | sed 's/^[ 0-9]*//'| sed 's/\\/\\\\/')"
     awk='$0 != cmd {print $0} END {print cmd}'
 
     touch ${HISTFILE}
@@ -123,6 +123,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
 fi
 
+alias rc='source ${HOME}/.bashrc'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
@@ -344,8 +345,7 @@ function tmux-session {
     if [[ -z "${TMUX_SESSION}" ]]; then
         exec tmux
     fi
-    tmux attach -t ${TMUX_SESSION}
-
+    tmux attach -t ${TMUX_SESSION} || tmux
 }
 
 if which tmux > /dev/null && [[ -z "${TMUX}" ]]
