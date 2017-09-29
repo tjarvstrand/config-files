@@ -77,7 +77,7 @@
  '(message-log-max 10000)
  '(package-selected-packages
    (quote
-    (flymd markdown-mode groovy-mode go-mode rust-mode auto-complete auto-highlight-symbol color-theme dash ensime erlang f python-mode s yaml-mode)))
+    (graphviz-dot-mode flymd markdown-mode groovy-mode go-mode rust-mode auto-complete auto-highlight-symbol color-theme dash ensime erlang f python-mode s yaml-mode)))
  '(safe-local-variable-values
    (quote
     ((py-smart-indentation)
