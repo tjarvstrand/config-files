@@ -47,6 +47,7 @@ keys = [
     Key([mod], "l", lazy.layout.grow_main()),
     Key([mod], "h", lazy.layout.shrink_main()),
     Key([mod], "f", lazy.layout.flip()),
+    Key([mod], "t", lazy.window.toggle_floating()),
 
     Key([mod, "control"], "r", lazy.restart()),
     Key([mod, "control"], "q", lazy.shutdown()),
@@ -64,7 +65,7 @@ keys = [
     Key([], "XF86AudioLowerVolume", lazy.spawn("/home/tjarvstrand/bin/volume dec 10")),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("/home/tjarvstrand/bin/volume inc 10")),
     # Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 5")),
-    # Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 5")),
+    # Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 5"))
     # Key(["control"], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 10")),
     # Key(["control"], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 10"))
 
@@ -72,7 +73,8 @@ keys = [
 
 ]
 
-groups = [Group(i) for i in "12345"]
+group_names = [str(i) for i in [1, 2, 3, 4, 5]]
+groups = [Group(i) for i in group_names]
 
 for i in groups:
     # mod1 + letter of group = switch to group
@@ -83,8 +85,11 @@ for i in groups:
 
 layouts = [
     libqtile.layout.xmonad.MonadTall(ratio = 0.66,
+                                     margin = 0,
                                      border_width = 1,
                                      single_border_width = 0,
+                                     border_normal = "000000",
+                                     border_focus = "ff0000",
                                      new_window_replaces_current = True),
     layout.Max()
 ]
@@ -102,7 +107,7 @@ screens = [
         top=bar.Bar(
             [
                 widget.Spacer(length = 10),
-                widget.AGroupBox(fontsize = fontsize, foreground = '18BAEB'),
+                widget.AGroupBox(fontsize = fontsize, foreground = '18BAEB', visible_groups = group_names),
                 widget.Sep(margin_x = 5, foreground = '555555'),
                 widget.WindowName(padding = 4, width = bar.STRETCH, fontsize = fontsize),
                 widget.KeyboardLayout(configured_keyboards = ["se", "custom"], fontsize = fontsize),
@@ -117,11 +122,11 @@ screens = [
                                     fontsize = fontsize
                                         ),
                 widget.Sep(padding = 8, foreground = '555555'),
-                widget.Systray(),
+                widget.Systray(icon_size = 24),
                 widget.Sep(padding = 8, foreground = '555555'),
                 widget.Clock(fontsize = fontsize -2, format='%b %d,%H:%M '),
             ],
-            24,
+            26,
             background = '111111'
         ),
     )
@@ -147,8 +152,8 @@ auto_fullscreen = True
 
 @hook.subscribe.screen_change
 def restart_on_randr(qtile, ev):
+    sh.detect_screens()
     qtile.cmd_restart()
-
 
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
@@ -170,17 +175,17 @@ def ensure_running(proc_name, run_proc):
   return start_if_required
 
 startup_apps = [lambda: sh.wmname(wmname),
+                lambda: sh.dropbox("start", "-i", _bg=True),
+                lambda: sh.feh("--bg-fill", "/home/tjarvstrand/Pictures/Wallpapers/1.jpeg", _bg=True),
                 ensure_running("nm-applet", lambda: sh.nm_applet(_bg=True)),
                 # TODO Run these from the xsession or something
                 ensure_running("copyq", lambda: sh.copyq(_bg=True)),
                 ensure_running("blueman-applet", lambda: sh.blueman_applet(_bg=True)),
                 ensure_running("xfce4-power-manager", lambda: sh.xfce4_power_manager(_bg=True)),
-                ensure_running("light-locker", lambda: sh.light_locker(_bg=True)),
-                lambda: sh.dropbox("start", "-i", _bg=True),
-                lambda: sh.feh("--bg-fill", "/home/tjarvstrand/Pictures/Wallpapers/1.jpeg", _bg=False)
-                # TODO Remove the below
-                #lambda: sh.setxkbmap("-layout", "custom", "-option", "caps:ctrl_modifier")
+                ensure_running("light-locker", lambda: sh.light_locker(_bg=True))
 ]
 
-for start_app in startup_apps:
-    start_app()
+@hook.subscribe.startup_complete
+def start_apps():
+    for start_app in startup_apps:
+        start_app()

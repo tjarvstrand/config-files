@@ -1,6 +1,7 @@
 # This is a comment
-gtk-theme-name="Vertex-Dark"
-gtk-icon-sizes = panel-menu=24,24:panel=24,24:gtk-menu=24,24:gtk-large-toolbar=24,24:gtk-small-toolbar=24,24:gtk-button=24,24
+#gtk-theme-name=""
+gtk-icon-theme-name="elementary-xfce-dark"
+#gtk-icon-sizes = "panel-menu=48,48:panel=48,48:gtk-menu=48,48:gtk-large-toolbar=48,48:gtk-small-toolbar=48,48:gtk-button=48,48:blueman=48:48"
 gtk-font-name = "Sans 8"
 
 #### Firefox text fix goes inside the theme name/gtk-2.0/gtkrc (or an app
