@@ -77,7 +77,7 @@
  '(message-log-max 10000)
  '(package-selected-packages
    (quote
-    (graphviz-dot-mode flymd markdown-mode groovy-mode go-mode rust-mode auto-complete auto-highlight-symbol color-theme dash ensime erlang f python-mode s yaml-mode)))
+    (js2-mode js3-mode web-mode cider haskell-mode graphviz-dot-mode flymd markdown-mode groovy-mode go-mode rust-mode auto-complete auto-highlight-symbol color-theme dash ensime erlang f python-mode s yaml-mode)))
  '(safe-local-variable-values
    (quote
     ((py-smart-indentation)
@@ -85,7 +85,11 @@
      (py-indent-offset . 2)
      (erlang-indent-level . 2)
      (allout-layout . t))))
- '(vc-follow-symlinks t))
+ '(vc-follow-symlinks t)
+ '(web-mode-attr-value-indent-offset 1)
+ '(web-mode-code-indent-offset 2)
+ '(web-mode-css-indent-offset 2)
+ '(web-mode-markup-indent-offset 2))
 
 (setq x-select-enable-clipboard 1)
 (setq-default indent-tabs-mode nil)
@@ -142,9 +146,11 @@
 
 (load-library "my-clojure")
 (load-library "my-erlang")
+(load-library "my-haskell")
 (load-library "my-python")
 (load-library "my-ruby")
 (load-library "my-scala")
+(load-library "my-javascript")
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))

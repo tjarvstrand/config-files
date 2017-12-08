@@ -11,18 +11,22 @@
 (global-set-key (kbd "C-c P") 'erl-print)
 (global-set-key (kbd "C-c M-p") 'erl-print-res)
 
+(global-set-key (kbd "C-S-Y") 'yank-and-inc)
 (global-set-key (kbd "C-c C-c") 'comment-region)
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
 
 (global-set-key (kbd "C-c i") 'insert-filename)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x M-e") 'eval-buffer)
+(global-set-key (kbd "C-x +") 'inc-font-size)
+(global-set-key (kbd "C-x -") 'dec-font-size)
 
 ;; rectangleMark
 (global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
 (global-set-key (kbd "C-x r C-x") 'rm-exchange-point-and-mark)
 (global-set-key (kbd "C-x r C-w") 'rm-kill-region)
 (global-set-key (kbd "C-x r M-w") 'rm-kill-ring-save)
+
 
 (global-set-key (kbd "C-x M-g") (lambda () (interactive) (goto-long-line 81)))
 

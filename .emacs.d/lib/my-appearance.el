@@ -7,6 +7,23 @@
   (interactive "nSize: ")
   (set-frame-font (format "Ubuntu Mono-%s" size)))
 
+(defun inc-font-size ()
+  (interactive)
+  (change-font-size 1))
+
+(defun dec-font-size ()
+  (interactive)
+  (change-font-size -1))
+
+(defun change-font-size (change)
+  (set-font-size (+ (get-font-size) change)))
+
+(defun get-font-size ()
+  (let* ((font-param (frame-parameter nil 'font-parameter)))
+    (save-match-data
+      (string-match "[^0-9]*-\\([0-9]+\\)" font-param)
+      (string-to-number (match-string 1 font-param)))))
+
 (defun frame-monitor-pixel-density ()
   (let* ((attrs  (frame-monitor-attributes))
          (mm     (apply '* (cdr (assoc 'mm-size attrs))))
