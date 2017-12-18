@@ -198,6 +198,8 @@ SCALA_VERSION=2.11.11
 export SCALA_HOME=/usr/local/lib/scala-${SCALA_VERSION}
 export PATH=${PATH}:${SCALA_HOME}/bin
 
+export PATH=${PATH}:${HOME}/dice/cmd/bin
+
 
 # Riak -------------------------------------------------------------------------
 ulimit -n 65536
@@ -208,13 +210,15 @@ ulimit -n 65536
 # Git -----------------------------------------------------------------------
 GIT_AUTHOR_NAME="Thomas Järvstrand"
 GIT_COMMITTER_NAME="Thomas Järvstrand"
+
+export DICE_EMAIL="tjarvstrand@contractor.ea.com"
 function cd_git {
   GIT_COMMITTER_EMAIL_ORIG=${GIT_COMMITTER_EMAIL}
   GIT_AUTHOR_EMAIL_ORIG=${GIT_AUTHOR_EMAIL}
   if [[ -n "${PWD}" ]]; then
-    if [[ "$(readlink -f ${PWD})" == *"$HOME/schibsted"* ]]; then
-        GIT_COMMITTER_EMAIL_NEW=${SCHIBSTED_EMAIL}
-        GIT_AUTHOR_EMAIL_NEW=${SCHIBSTED_EMAIL}
+    if [[ "$(readlink -f ${PWD})" == *"$HOME/dice"* ]]; then
+        GIT_COMMITTER_EMAIL_NEW=${DICE_EMAIL}
+        GIT_AUTHOR_EMAIL_NEW=${DICE_EMAIL}
     else
         GIT_COMMITTER_EMAIL_NEW=${EMAIL}
         GIT_AUTHOR_EMAIL_NEW=${EMAIL}
@@ -348,7 +352,7 @@ function tmux-session {
     tmux attach -t ${TMUX_SESSION} || tmux
 }
 
-if which tmux > /dev/null && [[ -z "${TMUX}" ]]
+if [ "$NO_TMUX" == "" ] && which tmux > /dev/null && [[ -z "${TMUX}" ]]
 then
     tmux-session
 fi

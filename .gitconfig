@@ -20,6 +20,8 @@
   # global per user gitignore file
   excludesfile = "~/.gitignore"
   pager = "less -F -X"
+[init]
+	templatedir = ~/.git_templates
 [status]
   [submodule]
     summary = 0

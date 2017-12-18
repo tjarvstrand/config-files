@@ -102,34 +102,31 @@ widget_defaults = dict(
 )
 
 fontsize = 16
+
+def widgets():
+    return [widget.Spacer(length = 10),
+            widget.AGroupBox(fontsize = fontsize, foreground = '18BAEB', visible_groups = group_names),
+            widget.Sep(margin_x = 5, foreground = '555555'),
+            widget.WindowName(padding = 4, width = bar.STRETCH, fontsize = fontsize),
+            widget.KeyboardLayout(configured_keyboards = ["se", "custom"], fontsize = fontsize),
+            widget.Sep(padding = 8, foreground = '555555'),
+            widget.CPUGraph(),
+            widget.CheckUpdates(distro = 'Ubuntu',
+                                display_format = '{updates} updates',
+                                update_interval = 600,
+                                execute = 'terminator --command="NO_TMUX=true sudo apt-get update && apt-upgrade && echo Upgrade done; read"',
+                                hide_on_no_updates = True,
+                                update_after_execute = True,
+                                fontsize = fontsize),
+            widget.Sep(padding = 8, foreground = '555555'),
+            widget.Systray(icon_size = 24),
+            widget.Sep(padding = 8, foreground = '555555'),
+            widget.Clock(fontsize = fontsize -2, format='%b %d,%H:%M '),
+            ]
+
 screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                widget.Spacer(length = 10),
-                widget.AGroupBox(fontsize = fontsize, foreground = '18BAEB', visible_groups = group_names),
-                widget.Sep(margin_x = 5, foreground = '555555'),
-                widget.WindowName(padding = 4, width = bar.STRETCH, fontsize = fontsize),
-                widget.KeyboardLayout(configured_keyboards = ["se", "custom"], fontsize = fontsize),
-                widget.Sep(padding = 8, foreground = '555555'),
-                widget.CPUGraph(),
-                widget.CheckUpdates(distro = 'Ubuntu',
-                                    display_format = '{updates} updates',
-                                    update_interval = 600,
-                                    execute = 'terminator --command="sudo apt-get update && apt-upgrade && echo Upgrade done; read"',
-                                    hide_on_no_updates = True,
-                                    update_after_execute = True,
-                                    fontsize = fontsize
-                                        ),
-                widget.Sep(padding = 8, foreground = '555555'),
-                widget.Systray(icon_size = 24),
-                widget.Sep(padding = 8, foreground = '555555'),
-                widget.Clock(fontsize = fontsize -2, format='%b %d,%H:%M '),
-            ],
-            26,
-            background = '111111'
-        ),
-    )
+    Screen(top=bar.Bar(widgets(), 26, background = '111111')),
+    Screen(top=bar.Bar(widgets(), 26, background = '111111'))
 ]
 
 # Drag floating layouts.
