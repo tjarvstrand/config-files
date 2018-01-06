@@ -198,8 +198,15 @@ SCALA_VERSION=2.11.11
 export SCALA_HOME=/usr/local/lib/scala-${SCALA_VERSION}
 export PATH=${PATH}:${SCALA_HOME}/bin
 
+# Dice -------------------------------------------------------------------------
+
 export PATH=${PATH}:${HOME}/dice/cmd/bin
 
+# Android ----------------------------------------------------------------------
+
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # Riak -------------------------------------------------------------------------
 ulimit -n 65536
