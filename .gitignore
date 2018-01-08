@@ -11,3 +11,6 @@
 .xchat2/scrollback
 **/*.pyc
 *.beam
+.ensime
+.ensime_cache
+ensime.sbt

@@ -50,3 +50,4 @@
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
 
 
+(global-set-key [f8] 'neotree-toggle)

@@ -58,6 +58,7 @@
  '(ahs-default-range (quote ahs-range-display))
  '(ahs-idle-interval 1)
  '(comment-multi-line t)
+ '(company-minimum-prefix-length 1)
  '(create-lockfiles nil)
  '(custom-safe-themes
    (quote
@@ -67,6 +68,8 @@
  '(edts-inhibit-package-check t)
  '(edts-man-root "~/.emacs.d/edts/doc/R15B03")
  '(electric-indent-mode nil)
+ '(ensime-implicit-gutter-icons nil)
+ '(ensime-startup-notification nil)
  '(epushover-token "8voZIQ79jOdclr92TizvFcVr84gpnb")
  '(epushover-user-key "iExDziORD2VAffHJFa4nHh5BKlOYwZ")
  '(ido-enable-tramp-completion nil)
@@ -75,9 +78,11 @@
  '(inhibit-startup-screen t)
  '(js-indent-level 2)
  '(message-log-max 10000)
+ '(neo-smart-open t)
+ '(neo-window-width 75)
  '(package-selected-packages
    (quote
-    (js2-mode js3-mode web-mode cider haskell-mode graphviz-dot-mode flymd markdown-mode groovy-mode go-mode rust-mode auto-complete auto-highlight-symbol color-theme dash ensime erlang f python-mode s yaml-mode)))
+    (js2-mode js3-mode web-mode cider haskell-mode graphviz-dot-mode flymd markdown-mode groovy-mode go-mode rust-mode auto-complete auto-highlight-symbol color-theme dash ensime erlang f python-mode s yaml-mode neotree)))
  '(safe-local-variable-values
    (quote
     ((py-smart-indentation)
@@ -95,6 +100,7 @@
 (setq-default indent-tabs-mode nil)
 
 (require 'smart-beginning-of-line)
+(require 'neotree)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Keybindings
 (load-library "my-keybindings")
@@ -195,5 +201,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(ensime-implicit-highlight ((t nil))))
 (put 'erase-buffer 'disabled nil)
+
+(let ((local-config-file (expand-file-name "~/.emacs.local")))
+  (when (file-exists-p local-config-file)
+    (load-file local-config-file)))

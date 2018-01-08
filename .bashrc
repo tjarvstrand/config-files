@@ -193,28 +193,28 @@ export PYTHONPATH=${ANSIBLE_HOME}/lib:${PYTHONPATH}
 export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:bin/javac::")
 export PATH=${PATH}:${JAVA_HOME}/bin
 
-# Java -------------------------------------------------------------------------
-SCALA_VERSION=2.11.11
-export SCALA_HOME=/usr/local/lib/scala-${SCALA_VERSION}
-export PATH=${PATH}:${SCALA_HOME}/bin
-
-# Dice -------------------------------------------------------------------------
-
-export PATH=${PATH}:${HOME}/dice/cmd/bin
+# Scala ------------------------------------------------------------------------
+# SCALA_VERSION=2.11.11
+# export SCALA_HOME=/usr/local/lib/scala-${SCALA_VERSION}
+# export PATH=${PATH}:${SCALA_HOME}/bin
 
 # Android ----------------------------------------------------------------------
 
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+export SBT_OPTS="-Xmx2G -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Xss2M -Duser.timezone=GMT"
+
+# Dice -------------------------------------------------------------------------
+export PATH=${PATH}:${HOME}/dice/cmd/bin
 
 # Riak -------------------------------------------------------------------------
 ulimit -n 65536
 
-# # Python -----------------------------------------------------------------------
+# Python -----------------------------------------------------------------------
 . ${HOME}/.virtualenv/bin/activate
 
-# Git -----------------------------------------------------------------------
+# Git --------------------------------------------------------------------------
 GIT_AUTHOR_NAME="Thomas Järvstrand"
 GIT_COMMITTER_NAME="Thomas Järvstrand"
 
