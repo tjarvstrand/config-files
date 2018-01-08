@@ -26,7 +26,7 @@
 
 from libqtile.config import Key, Screen, Group, Drag, Click
 from libqtile.log_utils import logger
-from libqtile.command import lazy
+from libqtile.command import lazy, Client
 from libqtile import layout, bar, hook, widget
 
 import libqtile.layout.xmonad
@@ -35,6 +35,7 @@ import sh
 
 mod = "mod4"
 alt = "mod1"
+shift = "shift"
 
 keys = [
     # windows style alt-tab/alt-shift-tab
@@ -44,9 +45,13 @@ keys = [
     # Toggle between different layouts as defined below
     Key([mod], "space", lazy.next_layout()),
     Key([mod], "Return", lazy.layout.swap_main()),
-    Key([mod], "l", lazy.layout.grow_main()),
-    Key([mod], "h", lazy.layout.shrink_main()),
+    Key([mod, shift], "l", lazy.layout.grow_main()),
+    Key([mod, shift], "h", lazy.layout.shrink_main()),
     Key([mod], "f", lazy.layout.flip()),
+
+    Key([mod], "h", lazy.prev_screen()),
+    Key([mod], "s", lazy.next_screen()),
+
     Key([mod], "t", lazy.window.toggle_floating()),
 
     Key([mod, "control"], "r", lazy.restart()),
