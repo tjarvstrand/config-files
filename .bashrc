@@ -127,11 +127,10 @@ alias rc='source ${HOME}/.bashrc'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias ssh="${HOME}/bin/ssh_agent_wrapper"
 alias gw='./gradlew'
 alias grep='grep --color=auto'
 
-export GIT_SSH_COMMAND="${HOME}/bin/ssh_agent_wrapper -q"
+export GIT_SSH_COMMAND="ssh -q"
 
 function g () {
     find . -name "*.erl" -exec grep -rnH $@ {} \;
@@ -148,6 +147,7 @@ fi
 
 export ERL_INETRC=${HOME}/.inetrc
 export SSH_ENV="$HOME/.ssh/environment"
+export LASTPASS_USERNAME="tjarvstrand@gmail.com"
 
 # Paths ------------------------------------------------------------------------
 
@@ -203,7 +203,7 @@ export PATH=${PATH}:${JAVA_HOME}/bin
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/platform-tools
-export SBT_OPTS="-Xmx2G -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Xss2M -Duser.timezone=GMT"
+export JAVA_OPTS="-Xmx2G -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Xss2M -Duser.timezone=GMT"
 
 # Dice -------------------------------------------------------------------------
 export PATH=${PATH}:${HOME}/dice/cmd/bin
@@ -302,7 +302,7 @@ function aws-with-adfs {
     >&2 echo "ADFS Session expires in ${EXPIRY} minutes"
 }
 
-export AWS_PROFILE=dev
+export AWS_PROFILE=test
 export AWS_DEFAULT_REGION=eu-west-1
 
 export AD_USERNAME=thojar
