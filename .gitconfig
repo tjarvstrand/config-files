@@ -31,3 +31,9 @@
 	insteadOf = sch:
 [hub]
   host = "github.schibsted.io"
+[alias]
+	co = checkout
+	br = branch
+	df = diff
+	st = status
+	ci = commit
