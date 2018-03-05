@@ -46,8 +46,14 @@
 
 ;; (global-set-key [C-tab] 'other-window)
 (global-set-key (kbd "C-x O") #'(lambda () (interactive) (other-window -1)))
-;; (global-set-key [C-S-iso-lefttab] #'(lambda () (interactive) (other-window -1)))
+(global-set-key (kbd "<C-tab>") #'(lambda () (interactive) (other-window 1)))
+(global-set-key (kbd "<C-iso-lefttab>") #'(lambda () (interactive) (other-window -1)))
+
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
+
+(global-set-key (kbd "M-<up>") 'move-line-up)
+(global-set-key (kbd "M-<down>") 'move-line-down)
 
 
 (global-set-key [f8] 'neotree-toggle)
+(global-set-key [(shift f8)] 'neotree-show)

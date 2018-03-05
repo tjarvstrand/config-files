@@ -1,6 +1,6 @@
 ;; color-theme
-(load-library "my-theme.el")
-(color-theme-my-theme)
+;; (load-library "my-theme.el")
+;; (color-theme-my-theme)
 
 ;; Set font
 (defun set-font-size (size)

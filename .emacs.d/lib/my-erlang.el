@@ -26,10 +26,10 @@
 (add-to-list 'load-path "~/src/edts/elisp/edts")
 
 
-(defun my-after-init-erlang-hook ()
-  (require 'edts-start)
-  (load-file "~/src/edts/test/load-tests.el"))
-(add-hook 'after-init-hook 'my-after-init-erlang-hook)
+;; (defun my-after-init-erlang-hook ()
+;;   (require 'edts-start)
+;;   (load-file "~/src/edts/test/load-tests.el"))
+;; (add-hook 'after-init-hook 'my-after-init-erlang-hook)
 
 ;; (edts-log-set-level 'debug)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
