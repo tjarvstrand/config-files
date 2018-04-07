@@ -15,7 +15,7 @@
 (put 'after-all 'clojure-backtracking-indent '(2))
 (put 'after 'clojure-backtracking-indent '(2))
 
-(add-hook 'after-save-hook 'cider-namespace-refresh)
+;;(add-hook 'after-save-hook 'cider-namespace-refresh)
 
 (defun cider-namespace-refresh ()
   (interactive)

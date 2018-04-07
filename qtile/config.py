@@ -69,10 +69,10 @@ keys = [
     Key([], "XF86AudioMute", lazy.spawn("/home/tjarvstrand/bin/toggle-mute")),
     Key([], "XF86AudioLowerVolume", lazy.spawn("/home/tjarvstrand/bin/volume dec 10")),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("/home/tjarvstrand/bin/volume inc 10")),
-    # Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 5")),
-    # Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 5"))
-    # Key(["control"], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 10")),
-    # Key(["control"], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 10"))
+    Key([], "XF86MonBrightnessUp", lazy.spawn("light -A 5")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("light -U 5")),
+    Key(["control"], "XF86MonBrightnessUp", lazy.spawn("light -A 10")),
+    Key(["control"], "XF86MonBrightnessDown", lazy.spawn("light -U 10")),
 
     Key([], "Print", lazy.spawn("xfce4-screenshooter -f -s /home/tjarvstrand/Dropbox/Pictures/Screenshots")),
 
@@ -130,7 +130,7 @@ def widgets():
             ]
 
 screens = [
-    Screen(top=bar.Bar(widgets(), 26, background = '111111')),
+    #Screen(top=bar.Bar(widgets(), 26, background = '111111')),
     Screen(top=bar.Bar(widgets(), 26, background = '111111'))
 ]
 
