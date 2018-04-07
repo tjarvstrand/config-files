@@ -1,3 +1,0 @@
-[submodule ".emacs.d/lib/epushover"]
-	path = .emacs.d/lib/epushover
-	url = git@github.com:tjarvstrand/epushover.git
